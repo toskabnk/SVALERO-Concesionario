@@ -62,12 +62,10 @@ public class Vehiculo {
 
     @Override
     public String toString() {
-        return "Vehiculo:" +
-                "referencia='" + referencia + '\'' +
-                ", marca='" + marca + '\'' +
+        return "Marca='" + marca + '\'' +
                 ", modelo='" + modelo + '\'' +
                 ", plazas=" + plazas +
                 ", precioBase=" + precioBase +
-                '}';
+                '€';
     }
 }
