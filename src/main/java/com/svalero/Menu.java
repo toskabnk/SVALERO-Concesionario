@@ -1,8 +1,10 @@
 package com.svalero;
 
-import com.svalero.concesionario.dao.Database;
-import com.svalero.concesionario.dao.VehiculoDAO;
+import com.svalero.concesionario.dao.*;
+import com.svalero.concesionario.domain.Cliente;
+import com.svalero.concesionario.domain.Empleado;
 import com.svalero.concesionario.domain.Vehiculo;
+import com.svalero.concesionario.domain.Ventas;
 import com.svalero.concesionario.exception.YaExisteVehiculo;
 
 import java.sql.Connection;
@@ -27,6 +29,7 @@ public class Menu {
             System.out.println("Por favor, elige una opcion:");
             System.out.println("1. Añadir un vehiculo");
             System.out.println("2. Ver todos los vehiculos");
+            System.out.println("3. Añadir una venta");
             System.out.println("0. Salir");
             System.out.print("Opcion elegida: ");
             opcion = teclado.nextLine();
@@ -39,6 +42,9 @@ public class Menu {
                 case "2":
                     verVehiculos();
                     break;
+                case "3":
+                    altaVenta();
+                    break;
                 case "0":
                     close();
                     System.exit(0);
@@ -48,6 +54,130 @@ public class Menu {
                     break;
             }
         } while (!opcion.equals("0"));
+    }
+
+    private void altaVenta() {
+        VentasDAO ventasDAO = new VentasDAO(connection);
+        EmpleadoDAO empleadoDAO = new EmpleadoDAO(connection);
+        ClienteDAO clienteDAO = new ClienteDAO(connection);
+        VehiculoDAO vehiculoDAO = new VehiculoDAO(connection);
+
+        Empleado empleado;
+        Cliente cliente;
+        Vehiculo vehiculo;
+
+        System.out.println("Por favor, selecciona el empleado que ha hecho la venta:");
+        try{
+            ArrayList<Empleado> empleados;
+            Integer indiceEmpleado;
+            Integer auxEmpleado = 0;
+
+            empleados = empleadoDAO.findAll();
+
+            for(Empleado emp : empleados){
+                System.out.println((auxEmpleado+1) + ". " + emp.toString());
+                auxEmpleado++;
+            }
+            System.out.print("Opcion elegida: ");
+            String opcion = teclado.nextLine();
+            indiceEmpleado = Integer.parseInt(opcion);
+            empleado = empleados.get(indiceEmpleado-1);
+        } catch (SQLException sqle){
+            System.out.println("Ha habido un error con la base de datos");
+            sqle.printStackTrace();
+            return;
+        } catch (NumberFormatException nfe){
+            System.out.println("ERROR: Lo que has introducido no es un numero");
+            System.out.println("Venta no añadida");
+            return;
+        } catch (IndexOutOfBoundsException ioobe){
+            System.out.println("ERROR: El numero elegido no es una opcion");
+            return;
+        }
+
+        System.out.println("Por favor, selecciona al cliente:");
+        try{
+            ArrayList<Cliente> clientes;
+            Integer auxCliente = 0;
+            Integer indiceCliente;
+
+            clientes = clienteDAO.findAll();
+
+            for(Cliente cl : clientes){
+                System.out.println((auxCliente+1) + ". " + cl.toString());
+                auxCliente++;
+            }
+            System.out.print("Opcion elegida: ");
+            String opcion = teclado.nextLine();
+            indiceCliente = Integer.parseInt(opcion);
+            cliente = clientes.get(indiceCliente-1);
+        } catch (SQLException sqle){
+            System.out.println("Ha habido un error con la base de datos");
+            sqle.printStackTrace();
+            return;
+        } catch (NumberFormatException nfe){
+            System.out.println("ERROR: Lo que has introducido no es un numero");
+            System.out.println("Venta no añadida");
+            return;
+        } catch (IndexOutOfBoundsException ioobe){
+            System.out.println("ERROR: El numero elegido no es una opcion");
+            return;
+        }
+
+        System.out.println("Por favor, selecciona el modelo de vehiculo que se ha vendido:");
+        try{
+            ArrayList<Vehiculo> vehiculos;
+            Integer auxVehiculo = 0;
+            Integer indiceVehiculo;
+
+            vehiculos = vehiculoDAO.findAll();
+
+            for(Vehiculo cl : vehiculos){
+                System.out.println((auxVehiculo+1) + ". " + cl.toString());
+                auxVehiculo++;
+            }
+            System.out.print("Opcion elegida: ");
+            String opcion = teclado.nextLine();
+            indiceVehiculo = Integer.parseInt(opcion);
+            vehiculo = vehiculos.get(indiceVehiculo-1);
+        } catch (SQLException sqle){
+            System.out.println("Ha habido un error con la base de datos");
+            sqle.printStackTrace();
+            return;
+        } catch (NumberFormatException nfe){
+            System.out.println("ERROR: Lo que has introducido no es un numero");
+            System.out.println("Venta no añadida");
+            return;
+        } catch (IndexOutOfBoundsException ioobe){
+            System.out.println("ERROR: El numero elegido no es una opcion");
+            return;
+        }
+        System.out.println("Introduce la matricula asignada:");
+        String matricula = teclado.nextLine();
+        System.out.println("Introduce el color:");
+        String color = teclado.nextLine();
+        System.out.println("Introduce el precio total:");
+        String precioTotal = teclado.nextLine();
+        Integer precio;
+        try{
+            precio=Integer.parseInt(precioTotal);
+        } catch (NumberFormatException nfe){
+            System.out.println("ERROR: Lo que has introducido no es un numero");
+            return;
+        }
+
+        Ventas venta = new Ventas(empleado.getDni(), cliente.getDni(), vehiculo.getReferencia(), matricula, color, precio);
+
+        try{
+            ventasDAO.altaVenta(venta);
+        } catch (SQLException sqle){
+            System.out.println("Ha habido un error con la base de datos");
+            sqle.printStackTrace();
+        }
+        System.out.println("");
+        System.out.println("Venta añadida!");
+        System.out.println("");
+
     }
 
     private void verVehiculos() {
@@ -111,7 +241,6 @@ public class Menu {
 
     //-----Requisitos-----
     //Parte de dar de alta
-    //TODO: Dar de alta vehiculos nuevos
 
     //Parte de listado y vista en detalle
     //TODO: Ver las ventas con toda su informacion (Vehiculo vendido, extras, cliente...)
