@@ -5,12 +5,15 @@ import com.svalero.concesionario.domain.Cliente;
 import com.svalero.concesionario.domain.Empleado;
 import com.svalero.concesionario.domain.Vehiculo;
 import com.svalero.concesionario.domain.Venta;
+import com.svalero.concesionario.exception.DniNoValido;
 import com.svalero.concesionario.exception.YaExisteVehiculo;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import static com.svalero.concesionario.util.ValidaDni.validarDNI;
 
 public class Menu {
     private Scanner teclado;
@@ -30,6 +33,7 @@ public class Menu {
             System.out.println("1. Añadir un vehiculo");
             System.out.println("2. Ver todos los vehiculos");
             System.out.println("3. Añadir una venta");
+            System.out.println("4. Buscar una venta");
             System.out.println("0. Salir");
             System.out.print("Opcion elegida: ");
             opcion = teclado.nextLine();
@@ -45,6 +49,9 @@ public class Menu {
                 case "3":
                     altaVenta();
                     break;
+                case "4":
+                    buscaVenta();
+                    break;
                 case "0":
                     close();
                     System.exit(0);
@@ -54,6 +61,36 @@ public class Menu {
                     break;
             }
         } while (!opcion.equals("0"));
+    }
+
+    private void buscaVenta() {
+        VentaDAO ventaDAO = new VentaDAO(connection);
+        ArrayList<Venta> ventas;
+
+        System.out.print("Introduce el DNI del ciente para buscar la venta: ");
+        String dni = teclado.nextLine().trim();
+
+        try {
+            validarDNI(dni);
+            ventas = ventaDAO.findVenta(dni);
+        } catch (DniNoValido dnv){
+            System.out.println(dnv.getMessage());
+            return;
+        } catch (SQLException sqle){
+            System.out.println("Ha habido un error con la base de datos");
+            return;
+        }
+
+        if(ventas.isEmpty()){
+            System.out.println("No hay ninguna venta registrada con el DNI introducido.");
+        } else {
+            int index = 1;
+            for (Venta venta : ventas){
+                System.out.println(index + ".- " + venta.toString());
+                index++;
+            }
+        }
+        System.out.println("");
     }
 
     private void altaVenta() {

@@ -52,7 +52,7 @@ public class VentaDAO {
             Venta venta = new Venta();
             venta.setIdVenta(res.getInt("id_venta"));
             venta.setDni_empleado(res.getString("dni_empleado"));
-            venta.setDni_cliente(res.getString("dni_empleado"));
+            venta.setDni_cliente(res.getString("dni_cliente"));
             venta.setReferencia(res.getString("referencia"));
             venta.setMatricula(res.getString("matricula"));
             venta.setColor(res.getString("color"));
