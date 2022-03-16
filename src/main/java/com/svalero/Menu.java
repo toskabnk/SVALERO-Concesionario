@@ -4,7 +4,7 @@ import com.svalero.concesionario.dao.*;
 import com.svalero.concesionario.domain.Cliente;
 import com.svalero.concesionario.domain.Empleado;
 import com.svalero.concesionario.domain.Vehiculo;
-import com.svalero.concesionario.domain.Ventas;
+import com.svalero.concesionario.domain.Venta;
 import com.svalero.concesionario.exception.YaExisteVehiculo;
 
 import java.sql.Connection;
@@ -57,7 +57,7 @@ public class Menu {
     }
 
     private void altaVenta() {
-        VentasDAO ventasDAO = new VentasDAO(connection);
+        VentaDAO ventaDAO = new VentaDAO(connection);
         EmpleadoDAO empleadoDAO = new EmpleadoDAO(connection);
         ClienteDAO clienteDAO = new ClienteDAO(connection);
         VehiculoDAO vehiculoDAO = new VehiculoDAO(connection);
@@ -166,10 +166,10 @@ public class Menu {
             return;
         }
 
-        Ventas venta = new Ventas(empleado.getDni(), cliente.getDni(), vehiculo.getReferencia(), matricula, color, precio);
+        Venta venta = new Venta(empleado.getDni(), cliente.getDni(), vehiculo.getReferencia(), matricula, color, precio);
 
         try{
-            ventasDAO.altaVenta(venta);
+            ventaDAO.altaVenta(venta);
         } catch (SQLException sqle){
             System.out.println("Ha habido un error con la base de datos");
             sqle.printStackTrace();
@@ -246,7 +246,6 @@ public class Menu {
     //TODO: Ver las ventas con toda su informacion (Vehiculo vendido, extras, cliente...)
 
     //Parte de funcionalidad de busqueda
-    //TODO: Buscar una venta en especifico
     //TODO: Buscar los vehiculos por marca, modelo...
 
     //Parte de dar de baja

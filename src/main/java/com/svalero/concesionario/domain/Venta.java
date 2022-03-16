@@ -1,6 +1,6 @@
 package com.svalero.concesionario.domain;
 
-public class Ventas {
+public class Venta {
     Integer idVenta;
     String dni_empleado;
     String dni_cliente;
@@ -9,10 +9,10 @@ public class Ventas {
     String color;
     Integer precioTotal;
 
-    public Ventas(){
+    public Venta(){
     }
 
-    public Ventas(String dni_empleado, String dni_cliente, String referencia, String matricula, String color, Integer precioTotal) {
+    public Venta(String dni_empleado, String dni_cliente, String referencia, String matricula, String color, Integer precioTotal) {
         this.dni_empleado = dni_empleado;
         this.dni_cliente = dni_cliente;
         this.referencia = referencia;
@@ -79,7 +79,7 @@ public class Ventas {
 
     @Override
     public String toString() {
-        return "Ventas{" +
+        return "Venta{" +
                 "idVenta=" + idVenta +
                 ", dni_empleado='" + dni_empleado + '\'' +
                 ", dni_cliente='" + dni_cliente + '\'' +
