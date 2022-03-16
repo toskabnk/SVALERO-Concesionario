@@ -1,6 +1,7 @@
 package com.svalero.concesionario.dao;
 
 import com.svalero.concesionario.domain.Empleado;
+import com.svalero.concesionario.domain.Usuario;
 import oracle.jdbc.proxy.annotation.Pre;
 
 import java.sql.Connection;
@@ -29,6 +30,7 @@ public class EmpleadoDAO {
         PreparedStatement st = connection.prepareStatement(sql);
         ResultSet res = st.executeQuery();
         while(res.next()){
+            UsuarioDAO usuarioDAO = new UsuarioDAO(connection);
             Empleado empleado = new Empleado();
             empleado.setDni(res.getString("dni"));
             empleado.setIdUsuario(res.getInt("id_usuario"));
@@ -36,6 +38,15 @@ public class EmpleadoDAO {
             empleado.setSalario(res.getInt("salario"));
             empleado.setDireccion(res.getString("direccion"));
             empleado.setCodigoEmpleado(res.getString("codigoEmpleado"));
+            Usuario usuario = usuarioDAO.getUsuario(empleado);
+            empleado.setNombreUsuario(usuario.getNombreUsuario());
+            empleado.setContraseña(usuario.getContraseña());
+            empleado.setNombre(usuario.getNombre());
+            empleado.setApellidos1(usuario.getApellidos1());
+            empleado.setApellidos2(usuario.getApellidos2());
+            empleado.setTelefono(usuario.getTelefono());
+            empleado.setEmail(usuario.getTelefono());
+            empleado.setRol(usuario.getRol());
             empleados.add(empleado);
         }
         return empleados;
