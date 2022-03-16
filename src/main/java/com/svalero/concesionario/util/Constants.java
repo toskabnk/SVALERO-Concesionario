@@ -1,5 +1,7 @@
 package com.svalero.concesionario.util;
 
+import java.util.regex.Pattern;
+
 public class Constants {
     public static final String MYSQL_DRIVER = "com.mysql.cj.jdbc.Driver";
     public static final String ORACLE_DRIVER = "oracle.jdbc.driver.OracleDriver";
@@ -9,4 +11,9 @@ public class Constants {
 
     public static final String USERNAME = "concesionario";
     public static final String PASSWORD = "1234";
+
+    public static final Pattern REGEXP = Pattern.compile("[0-9]{8}[A-Z]");
+    public static final String DIGITO_CONTROL = "TRWAGMYFPDXBNJZSQVHLCKE";
+    public static final String[] INVALIDOS = new String[] { "00000000T", "00000001R", "99999999R" };
+
 }
