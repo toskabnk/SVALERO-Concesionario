@@ -111,6 +111,7 @@ public class Menu {
             System.out.println("Por favor, elige una opcion:");
             System.out.println("1. Ver mis compras");
             System.out.println("2. Ver mis compras en detalle");
+            System.out.println("3. Buscar vehiculo por marca");
             System.out.println("0. Salir");
             System.out.print("Opcion elegida: ");
             opcion = teclado.nextLine();
@@ -122,6 +123,9 @@ public class Menu {
                     break;
                 case "2":
                     verVentasEnDetalle();
+                    break;
+                case "3":
+                    buscarVehiculo();
                     break;
                 case "0":
                     close();
