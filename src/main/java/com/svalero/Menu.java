@@ -2,10 +2,7 @@ package com.svalero;
 
 import com.svalero.concesionario.dao.*;
 import com.svalero.concesionario.domain.*;
-import com.svalero.concesionario.exception.ClienteNoEncontrado;
-import com.svalero.concesionario.exception.DniNoValido;
-import com.svalero.concesionario.exception.UsuarioNoEncontrado;
-import com.svalero.concesionario.exception.YaExisteVehiculo;
+import com.svalero.concesionario.exception.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -163,11 +160,18 @@ public class Menu {
             return;
         }
 
-        System.out.println("Introduce la marca (Actual: " + vehiculo.getMarca() +"):");
-        vehiculo.setMarca(teclado.nextLine());
-        System.out.println("Introduce el modelo (Actual: " + vehiculo.getModelo() +"):");
-        vehiculo.setModelo(teclado.nextLine());
-        System.out.println("Introduce el numero de plazas (Actual: " + vehiculo.getPlazas() +"):");
+        try {
+            System.out.println("Introduce la marca (Actual: " + vehiculo.getMarca() + "):");
+            vehiculo.setMarca(teclado.nextLine());
+            compruebaVacio(vehiculo.getMarca());
+            System.out.println("Introduce el modelo (Actual: " + vehiculo.getModelo() + "):");
+            vehiculo.setModelo(teclado.nextLine());
+            compruebaVacio(vehiculo.getModelo());
+            System.out.println("Introduce el numero de plazas (Actual: " + vehiculo.getPlazas() + "):");
+        } catch (IllegalArgumentException iae){
+                System.out.println(iae.getMessage());
+                return;
+            }
 
         Integer plazas, precio;
         try {
@@ -196,6 +200,12 @@ public class Menu {
             return;
         }
 
+    }
+
+    private void compruebaVacio (String campo) throws IllegalArgumentException {
+        if(campo.isEmpty()){
+            throw new IllegalArgumentException("El campo no puede estar vacio");
+        }
     }
 
     private void verVentasEnDetalle(){
