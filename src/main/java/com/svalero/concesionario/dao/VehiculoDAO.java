@@ -3,10 +3,7 @@ package com.svalero.concesionario.dao;
 import com.svalero.concesionario.domain.Vehiculo;
 import com.svalero.concesionario.exception.YaExisteVehiculo;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -143,5 +140,37 @@ public class VehiculoDAO {
         st.setString(5, vehiculo.getReferencia());
         int rows = st.executeUpdate();
         return rows == 1;
+    }
+
+    public ArrayList<String> getMarcas() throws SQLException{
+        String sql = "SELECT marca FROM VEHICULO GROUP BY marca";
+        ArrayList<String> marcas = new ArrayList<>();
+
+        PreparedStatement st = connection.prepareStatement(sql);
+        ResultSet res = st.executeQuery();
+        while(res.next()){
+            marcas.add(res.getString("marca"));
+        }
+
+        return marcas;
+    }
+
+    public ArrayList<Vehiculo> findByMarca(String marca) throws SQLException{
+        String sql = "SELECT * FROM VEHICULO WHERE marca = ?";
+        ArrayList<Vehiculo> vehiculos = new ArrayList<>();
+
+        PreparedStatement st = connection.prepareStatement(sql);
+        st.setString(1, marca);
+        ResultSet res = st.executeQuery();
+        while (res.next()){
+            Vehiculo vehiculo = new Vehiculo();
+            vehiculo.setReferencia(res.getString("referencia"));
+            vehiculo.setMarca(res.getString("marca"));
+            vehiculo.setModelo(res.getString("modelo"));
+            vehiculo.setPlazas(res.getInt("plazas"));
+            vehiculo.setPrecioBase(res.getInt("precioBase"));
+            vehiculos.add(vehiculo);
+        }
+        return vehiculos;
     }
 }

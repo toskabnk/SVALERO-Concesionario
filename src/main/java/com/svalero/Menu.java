@@ -64,7 +64,8 @@ public class Menu {
             System.out.println("3. Añadir una venta");
             System.out.println("4. Buscar una venta");
             System.out.println("5. Ver todas las ventas");
-            System.out.println("6. Modificar un vehichulo");
+            System.out.println("6. Modificar un vehiculo");
+            System.out.println("7. Buscar vehiculo");
             System.out.println("0. Salir");
             System.out.print("Opcion elegida: ");
             opcion = teclado.nextLine();
@@ -88,6 +89,9 @@ public class Menu {
                     break;
                 case "6":
                     modificaVehiculo();
+                    break;
+                case "7":
+                    buscarVehiculo();
                     break;
                 case "0":
                     close();
@@ -128,6 +132,48 @@ public class Menu {
                     break;
             }
         } while (!opcion.equals("0"));
+    }
+
+    private void buscarVehiculo(){
+        VehiculoDAO vehiculoDAO = new VehiculoDAO(connection);
+        String marca;
+
+        System.out.println("Selecciona la marca de la que buscar un vehiculo: ");
+        try{
+            ArrayList<String> marcas;
+            ArrayList<Vehiculo> vehiculos;
+
+            marcas = vehiculoDAO.getMarcas();
+
+            int index = 1;
+            for(String str : marcas){
+                System.out.println(index + ". " + str);
+                index++;
+            }
+            System.out.print("Opcion elegida: ");
+            String opcion = teclado.nextLine();
+            Integer indiceMarca = Integer.parseInt(opcion);
+            marca = marcas.get(indiceMarca-1);
+
+            vehiculos = vehiculoDAO.findByMarca(marca);
+            index = 1;
+            for(Vehiculo veh : vehiculos){
+                System.out.println(index + ". " + veh.toString());
+                index++;
+            }
+
+
+        } catch (SQLException sqle){
+            System.out.println("Ha habido un error con la base de datos");
+            return;
+        } catch (NumberFormatException nfe){
+            System.out.println("ERROR: Lo que has introducido no es un numero");
+            return;
+        } catch (IndexOutOfBoundsException ioobe){
+            System.out.println("ERROR: El numero elegido no es una opcion");
+            return;
+        }
+
     }
 
     private void modificaVehiculo(){
@@ -520,7 +566,6 @@ public class Menu {
     //Parte de listado y vista en detalle
 
     //Parte de funcionalidad de busqueda
-    //TODO: Buscar los vehiculos por marca, modelo...
 
     //Parte de dar de baja
     //TODO: Eliminar vehiculos que no se hayan usado en ninguna venta
