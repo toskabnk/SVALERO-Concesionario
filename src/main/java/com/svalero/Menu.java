@@ -129,8 +129,12 @@ public class Menu {
         try{
             Cliente cliente = clienteDAO.getCliente(usuarioActual).orElseThrow(ClienteNoEncontrado::new);
             ventas = ventaDAO.findVenta(cliente.getDni());
-            for (Venta venta : ventas){
-                System.out.println(venta.toString());
+            if(ventas.isEmpty()){
+                System.out.println("No tienes ninguna compra realizada en el concesionario");
+            } else {
+                for (Venta venta : ventas){
+                    System.out.println(venta.toString());
+                }
             }
         } catch (SQLException sqle){
             System.out.println("Ha habido un error con la base de datos");
