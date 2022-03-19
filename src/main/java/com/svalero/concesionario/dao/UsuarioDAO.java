@@ -98,4 +98,34 @@ public class UsuarioDAO {
     public Usuario getUsuario(Cliente cliente) throws SQLException, NoSuchElementException {
         return getUsuario(cliente.getIdUsuario()).orElseThrow();
     }
+
+    /**
+     * Devuelve el Usuario si el nombre de usuario y la contraseña, introducidos por parametro, son correctos
+     * @param nombeUsuario Nombre de Usuario a comprobar
+     * @param contrseña Contraseña de Usuario a comprobar
+     * @return Optional de Usuario
+     * @throws SQLException Si hay algun error no especifico lanzado por la BD
+     */
+    public Optional<Usuario> getUsuario(String nombeUsuario, String contrseña) throws SQLException{
+        String sql = "SELECT * FROM USUARIO WHERE nombreUsuario = ? AND contraseña = ?";
+        Usuario usuario = null;
+
+        PreparedStatement st = connection.prepareStatement(sql);
+        st.setString(1, nombeUsuario);
+        st.setString(2, contrseña);
+        ResultSet res = st.executeQuery();
+        while(res.next()){
+            usuario = new Usuario();
+            usuario.setIdUsuario(res.getInt("id_usuario"));
+            usuario.setNombreUsuario(res.getString("nombreUsuario"));
+            usuario.setContraseña(res.getString("contraseña"));
+            usuario.setNombre(res.getString("nombre"));
+            usuario.setApellidos1(res.getString("apellido1"));
+            usuario.setApellidos2(res.getString("apellido2"));
+            usuario.setTelefono(res.getString("telefono"));
+            usuario.setRol(res.getString("rol"));
+        }
+
+        return Optional.ofNullable(usuario);
+    }
 }

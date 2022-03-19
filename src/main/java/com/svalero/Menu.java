@@ -1,11 +1,10 @@
 package com.svalero;
 
 import com.svalero.concesionario.dao.*;
-import com.svalero.concesionario.domain.Cliente;
-import com.svalero.concesionario.domain.Empleado;
-import com.svalero.concesionario.domain.Vehiculo;
-import com.svalero.concesionario.domain.Venta;
+import com.svalero.concesionario.domain.*;
+import com.svalero.concesionario.exception.ClienteNoEncontrado;
 import com.svalero.concesionario.exception.DniNoValido;
+import com.svalero.concesionario.exception.UsuarioNoEncontrado;
 import com.svalero.concesionario.exception.YaExisteVehiculo;
 
 import java.sql.Connection;
@@ -19,6 +18,7 @@ public class Menu {
     private Scanner teclado;
     private Database database;
     private Connection connection;
+    private Usuario usuarioActual;
 
     public Menu(){
         teclado = new Scanner(System.in);
@@ -26,6 +26,38 @@ public class Menu {
 
     public void muestraMenu(){
         connect();
+        login();
+
+        System.out.println("Bienvenido "+usuarioActual.getNombre());
+        if(usuarioActual.getRol().equals("USER")){
+            menuUsuario();
+        } else {
+            menuAdmin();
+        }
+    }
+
+    private void login() {
+        System.out.println("Inicia sesion para continuar:");
+        System.out.print("Nombre de usuario: ");
+        String nombre = teclado.nextLine();
+        System.out.print("Introduce tu contraseña: ");
+        String contraseña = teclado.nextLine();
+
+        UsuarioDAO usuarioDAO = new UsuarioDAO(connection);
+        try{
+            usuarioActual = usuarioDAO.getUsuario(nombre, contraseña).orElseThrow(UsuarioNoEncontrado::new);
+        } catch (SQLException sqle){
+            System.out.println("Ha habido un error con la base de datos");
+            sqle.printStackTrace();
+            System.exit(0);
+        } catch (UsuarioNoEncontrado une){
+            System.out.println(une.getMessage());
+            System.exit(0);
+        }
+        System.out.println("\n Login correcto! \n");
+    }
+
+    private void menuAdmin() {
         String opcion;
         do{
             System.out.println("Consola de administracion del concesionario");
@@ -61,6 +93,50 @@ public class Menu {
                     break;
             }
         } while (!opcion.equals("0"));
+    }
+
+    private void menuUsuario() {
+        String opcion;
+        do{
+            System.out.println("Consola de administracion del concesionario");
+            System.out.println("Por favor, elige una opcion:");
+            System.out.println("1. Ver mis compras");
+            System.out.println("0. Salir");
+            System.out.print("Opcion elegida: ");
+            opcion = teclado.nextLine();
+            System.out.println("");
+
+            switch (opcion){
+                case "1":
+                    verVentaCliente();
+                    break;
+                case "0":
+                    close();
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Opcion elegida incorrecta");
+                    break;
+            }
+        } while (!opcion.equals("0"));
+    }
+
+    private void verVentaCliente() {
+        VentaDAO ventaDAO = new VentaDAO(connection);
+        ClienteDAO clienteDAO = new ClienteDAO(connection);
+        ArrayList<Venta> ventas;
+
+        try{
+            Cliente cliente = clienteDAO.getCliente(usuarioActual).orElseThrow(ClienteNoEncontrado::new);
+            ventas = ventaDAO.findVenta(cliente.getDni());
+            for (Venta venta : ventas){
+                System.out.println(venta.toString());
+            }
+        } catch (SQLException sqle){
+            System.out.println("Ha habido un error con la base de datos");
+        } catch (ClienteNoEncontrado cne){
+            System.out.println(cne.getMessage());
+        }
     }
 
     private void buscaVenta() {
@@ -289,7 +365,6 @@ public class Menu {
     //TODO: Eliminar vehiculos que no se hayan usado en ninguna venta
 
     //-----Otras funcionalidades-----
-    //TODO: Funcionalidad de login
     //TODO: Poder modificar un vehiculo
     //TODO: Zona privada para poder moficar los datos de usuario.
 }
