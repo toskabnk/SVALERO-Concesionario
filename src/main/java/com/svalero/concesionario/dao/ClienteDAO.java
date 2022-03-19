@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class ClienteDAO {
 
@@ -47,5 +48,30 @@ public class ClienteDAO {
             clientes.add(cliente);
         }
         return clientes;
+    }
+
+    public Optional<Cliente> getCliente(Usuario usuario) throws  SQLException{
+        String sql = "SELECT * FROM CLIENTE WHERE id_usuario = "+usuario.getIdUsuario();
+        Cliente cliente = null;
+
+        PreparedStatement st = connection.prepareStatement(sql);
+        ResultSet res = st.executeQuery();
+        while(res.next()){
+            cliente = new Cliente();
+            cliente.setDni(res.getString("dni"));
+            cliente.setIdUsuario(res.getInt("id_usuario"));
+            cliente.setDireccion(res.getString("direccion"));
+            cliente.setCodigoPostal(res.getString("codigopostal"));
+            cliente.setNombreUsuario(usuario.getNombreUsuario());
+            cliente.setContraseña(usuario.getContraseña());
+            cliente.setNombre(usuario.getNombre());
+            cliente.setApellidos1(usuario.getApellidos1());
+            cliente.setApellidos2(usuario.getApellidos2());
+            cliente.setTelefono(usuario.getTelefono());
+            cliente.setEmail(usuario.getTelefono());
+            cliente.setRol(usuario.getRol());
+        }
+
+        return Optional.ofNullable(cliente);
     }
 }
