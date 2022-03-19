@@ -51,4 +51,38 @@ public class EmpleadoDAO {
         }
         return empleados;
     }
+
+    /**
+     * Devuelve el Empleado pasado por parametro
+     * @param dni DNI del Empleado a buscar en la BD
+     * @return Empleado de la BD
+     * @throws SQLException Si hay algun error no especifico lanzado por la BD
+     */
+    public Empleado getEmpleado(String dni) throws SQLException{
+        String sql = "SELECT * FROM EMPLEADO WHERE dni = ?";
+        Empleado empleado = new Empleado();
+
+        PreparedStatement st = connection.prepareStatement(sql);
+        st.setString(1, dni);
+        ResultSet res = st.executeQuery();
+        while(res.next()){
+            UsuarioDAO usuarioDAO = new UsuarioDAO(connection);
+            empleado.setDni(res.getString("dni"));
+            empleado.setIdUsuario(res.getInt("id_usuario"));
+            empleado.setDepartamento(res.getString("departamento"));
+            empleado.setSalario(res.getInt("salario"));
+            empleado.setDireccion(res.getString("direccion"));
+            empleado.setCodigoEmpleado(res.getString("codigoEmpleado"));
+            Usuario usuario = usuarioDAO.getUsuario(empleado);
+            empleado.setNombreUsuario(usuario.getNombreUsuario());
+            empleado.setContraseña(usuario.getContraseña());
+            empleado.setNombre(usuario.getNombre());
+            empleado.setApellidos1(usuario.getApellidos1());
+            empleado.setApellidos2(usuario.getApellidos2());
+            empleado.setTelefono(usuario.getTelefono());
+            empleado.setEmail(usuario.getTelefono());
+            empleado.setRol(usuario.getRol());
+        }
+        return empleado;
+    }
 }

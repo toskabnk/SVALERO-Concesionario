@@ -107,4 +107,28 @@ public class VehiculoDAO {
         st.close();
         return vehiculos;
     }
+
+    /**
+     * Devuelve el Vehiculo pasado por parametro
+     * @param referencia Referencia del Vehiculo a buscar en la BD
+     * @return Vehiculo de la BD
+     * @throws SQLException Si hay algun error no especifico lanzado por la BD
+     */
+    public Vehiculo getVehiculo(String referencia) throws SQLException {
+        String sql = "SELECT * FROM VEHICULO WHERE referencia = ?";
+        Vehiculo vehiculo = new Vehiculo();
+
+        PreparedStatement st = connection.prepareStatement(sql);
+        st.setString(1, referencia);
+        ResultSet res = st.executeQuery();
+        while (res.next()){
+            vehiculo.setReferencia(res.getString("referencia"));
+            vehiculo.setMarca(res.getString("marca"));
+            vehiculo.setModelo(res.getString("modelo"));
+            vehiculo.setPlazas(res.getInt("plazas"));
+            vehiculo.setPrecioBase(res.getInt("precioBase"));
+        }
+        st.close();
+        return vehiculo;
+    }
 }
