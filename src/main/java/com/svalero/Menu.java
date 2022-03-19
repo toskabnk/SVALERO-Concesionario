@@ -86,7 +86,7 @@ public class Menu {
                     buscaVenta();
                     break;
                 case "5":
-                    verVentas();
+                    verVentasEnDetalle();
                     break;
                 case "0":
                     close();
@@ -105,6 +105,7 @@ public class Menu {
             System.out.println("Consola de administracion del concesionario");
             System.out.println("Por favor, elige una opcion:");
             System.out.println("1. Ver mis compras");
+            System.out.println("2. Ver mis compras en detalle");
             System.out.println("0. Salir");
             System.out.print("Opcion elegida: ");
             opcion = teclado.nextLine();
@@ -113,6 +114,9 @@ public class Menu {
             switch (opcion){
                 case "1":
                     verVentaCliente();
+                    break;
+                case "2":
+                    verVentasEnDetalle();
                     break;
                 case "0":
                     close();
@@ -125,7 +129,7 @@ public class Menu {
         } while (!opcion.equals("0"));
     }
 
-    private void verVentas(){
+    private void verVentasEnDetalle(){
         Venta venta;
         Empleado empleado;
         Cliente cliente;
@@ -135,8 +139,14 @@ public class Menu {
             Integer indiceVenta;
             ArrayList<Venta> ventas;
             VentaDAO ventaDAO = new VentaDAO(connection);
+            ClienteDAO clienteDAO = new ClienteDAO(connection);
 
-            ventas = ventaDAO.findAll();
+            if(usuarioActual.getRol().equals("USER")){
+                cliente = clienteDAO.getCliente(usuarioActual).orElseThrow(ClienteNoEncontrado::new);
+                ventas = ventaDAO.findVenta(cliente.getDni());
+            } else {
+                ventas = ventaDAO.findAll();
+            }
 
             if(ventas.isEmpty()){
                 System.out.println("No hay ninguna venta ¿Raro verdad? Alguien la tiene que haber liado, revisa la BD");
@@ -161,6 +171,9 @@ public class Menu {
             return;
         } catch (IndexOutOfBoundsException ioobe){
             System.out.println("ERROR: El numero elegido no es una opcion");
+            return;
+        } catch (ClienteNoEncontrado cne){
+            System.out.println(cne.getMessage());
             return;
         }
 
