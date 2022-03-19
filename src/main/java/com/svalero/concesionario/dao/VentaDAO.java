@@ -62,4 +62,29 @@ public class VentaDAO {
         st.close();
         return ventas;
     }
+
+    /**
+     * Devulve un ArrayList con todas las ventas de la BD
+     * @return ArrayList de Venta en la que contiene todas las ventas encontradas en la BD
+     * @throws SQLException Si hay algun error no especifico lanzado por la BD
+     */
+    public ArrayList<Venta> findAll() throws SQLException{
+        String sql = "SELECT * FROM VENTAS ORDER BY id_venta";
+        ArrayList<Venta> ventas = new ArrayList<>();
+
+        PreparedStatement st = connection.prepareStatement(sql);
+        ResultSet res = st.executeQuery();
+        while (res.next()){
+            Venta venta = new Venta();
+            venta.setIdVenta(res.getInt("id_venta"));
+            venta.setDni_empleado(res.getString("dni_empleado"));
+            venta.setDni_cliente(res.getString("dni_cliente"));
+            venta.setReferencia(res.getString("referencia"));
+            venta.setMatricula(res.getString("matricula"));
+            venta.setColor(res.getString("color"));
+            venta.setPrecioTotal(res.getInt("precioTotal"));
+            ventas.add(venta);
+        }
+        return ventas;
+    }
 }

@@ -66,6 +66,7 @@ public class Menu {
             System.out.println("2. Ver todos los vehiculos");
             System.out.println("3. Añadir una venta");
             System.out.println("4. Buscar una venta");
+            System.out.println("5. Ver todas las ventas");
             System.out.println("0. Salir");
             System.out.print("Opcion elegida: ");
             opcion = teclado.nextLine();
@@ -84,6 +85,9 @@ public class Menu {
                 case "4":
                     buscaVenta();
                     break;
+                case "5":
+                    verVentasEnDetalle();
+                    break;
                 case "0":
                     close();
                     System.exit(0);
@@ -101,6 +105,7 @@ public class Menu {
             System.out.println("Consola de administracion del concesionario");
             System.out.println("Por favor, elige una opcion:");
             System.out.println("1. Ver mis compras");
+            System.out.println("2. Ver mis compras en detalle");
             System.out.println("0. Salir");
             System.out.print("Opcion elegida: ");
             opcion = teclado.nextLine();
@@ -109,6 +114,9 @@ public class Menu {
             switch (opcion){
                 case "1":
                     verVentaCliente();
+                    break;
+                case "2":
+                    verVentasEnDetalle();
                     break;
                 case "0":
                     close();
@@ -119,6 +127,77 @@ public class Menu {
                     break;
             }
         } while (!opcion.equals("0"));
+    }
+
+    private void verVentasEnDetalle(){
+        Venta venta;
+        Empleado empleado;
+        Cliente cliente;
+        Vehiculo vehiculo;
+
+        try{
+            Integer indiceVenta;
+            ArrayList<Venta> ventas;
+            VentaDAO ventaDAO = new VentaDAO(connection);
+            ClienteDAO clienteDAO = new ClienteDAO(connection);
+
+            if(usuarioActual.getRol().equals("USER")){
+                cliente = clienteDAO.getCliente(usuarioActual).orElseThrow(ClienteNoEncontrado::new);
+                ventas = ventaDAO.findVenta(cliente.getDni());
+            } else {
+                ventas = ventaDAO.findAll();
+            }
+
+            if(ventas.isEmpty()){
+                System.out.println("No hay ninguna venta ¿Raro verdad? Alguien la tiene que haber liado, revisa la BD");
+                return;
+            } else {
+                int index = 1;
+                for (Venta aux : ventas) {
+                    System.out.println(index + ". " + aux.toString());
+                    index++;
+                }
+
+                System.out.print("Seleccione una venta para ver en mas detalle: ");
+                String opcion = teclado.nextLine();
+                indiceVenta = Integer.parseInt(opcion);
+                venta = ventas.get(indiceVenta-1);
+            }
+        } catch (SQLException sqle){
+            System.out.println("Ha habido un error con la base de datos");
+            return;
+        } catch (NumberFormatException nfe){
+            System.out.println("ERROR: Lo que has introducido no es un numero");
+            return;
+        } catch (IndexOutOfBoundsException ioobe){
+            System.out.println("ERROR: El numero elegido no es una opcion");
+            return;
+        } catch (ClienteNoEncontrado cne){
+            System.out.println(cne.getMessage());
+            return;
+        }
+
+        try {
+            ClienteDAO clienteDAO = new ClienteDAO(connection);
+            EmpleadoDAO empleadoDAO = new EmpleadoDAO(connection);
+            VehiculoDAO vehiculoDAO = new VehiculoDAO(connection);
+
+            cliente = clienteDAO.getCliente(venta.getDni_cliente());
+            empleado = empleadoDAO.getEmpleado(venta.getDni_empleado());
+            vehiculo = vehiculoDAO.getVehiculo(venta.getReferencia());
+        } catch (SQLException sqle) {
+            System.out.println("Ha habido un error con la base de datos");
+            return;
+        }
+
+        System.out.println("Detalles de la venta seleccionada: ");
+        System.out.println(venta.toString());
+        System.out.println("\n Empleado que hizo la venta: ");
+        System.out.println(empleado.toString());
+        System.out.println("\n El cliente que hizo la compra: ");
+        System.out.println(cliente.toString());
+        System.out.println("\n Vehiculo comprado por el cliente: ");
+        System.out.println(vehiculo.toString());
     }
 
     private void verVentaCliente() {
@@ -360,7 +439,6 @@ public class Menu {
     //Parte de dar de alta
 
     //Parte de listado y vista en detalle
-    //TODO: Ver las ventas con toda su informacion (Vehiculo vendido, extras, cliente...)
 
     //Parte de funcionalidad de busqueda
     //TODO: Buscar los vehiculos por marca, modelo...
