@@ -131,4 +131,17 @@ public class VehiculoDAO {
         st.close();
         return vehiculo;
     }
+
+    public boolean modificaVehiulo(Vehiculo vehiculo) throws SQLException {
+        String sql = "UPDATE VEHICULO SET marca = ?, modelo = ?, plazas = ?, precioBase = ? WHERE referencia = ?";
+
+        PreparedStatement st = connection.prepareStatement(sql);
+        st.setString(1, vehiculo.getMarca());
+        st.setString(2, vehiculo.getModelo());
+        st.setInt(3, vehiculo.getPlazas());
+        st.setInt(4, vehiculo.getPrecioBase());
+        st.setString(5, vehiculo.getReferencia());
+        int rows = st.executeUpdate();
+        return rows == 1;
+    }
 }

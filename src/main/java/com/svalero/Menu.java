@@ -2,10 +2,7 @@ package com.svalero;
 
 import com.svalero.concesionario.dao.*;
 import com.svalero.concesionario.domain.*;
-import com.svalero.concesionario.exception.ClienteNoEncontrado;
-import com.svalero.concesionario.exception.DniNoValido;
-import com.svalero.concesionario.exception.UsuarioNoEncontrado;
-import com.svalero.concesionario.exception.YaExisteVehiculo;
+import com.svalero.concesionario.exception.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -67,6 +64,7 @@ public class Menu {
             System.out.println("3. Añadir una venta");
             System.out.println("4. Buscar una venta");
             System.out.println("5. Ver todas las ventas");
+            System.out.println("6. Modificar un vehichulo");
             System.out.println("0. Salir");
             System.out.print("Opcion elegida: ");
             opcion = teclado.nextLine();
@@ -87,6 +85,9 @@ public class Menu {
                     break;
                 case "5":
                     verVentasEnDetalle();
+                    break;
+                case "6":
+                    modificaVehiculo();
                     break;
                 case "0":
                     close();
@@ -127,6 +128,84 @@ public class Menu {
                     break;
             }
         } while (!opcion.equals("0"));
+    }
+
+    private void modificaVehiculo(){
+        VehiculoDAO vehiculoDAO = new VehiculoDAO(connection);
+        Vehiculo vehiculo;
+
+        try {
+            ArrayList<Vehiculo> vehiculos;
+
+            System.out.println("Selecciona el vehiculo a modificar: ");
+            vehiculos = vehiculoDAO.findAll();
+
+            int indice = 1;
+            for(Vehiculo aux : vehiculos){
+                System.out.println(indice + ". " + aux.toString());
+                indice++;
+            }
+            System.out.print("Opcion elegida: ");
+            String opcion = teclado.nextLine();
+            Integer indiceVehiculo = Integer.parseInt(opcion);
+            vehiculo = vehiculos.get(indiceVehiculo-1);
+        } catch (SQLException sqle){
+            System.out.println("Ha habido un error con la base de datos");
+            return;
+        } catch (NumberFormatException nfe){
+            System.out.println("ERROR: Lo que has introducido no es un numero");
+            return;
+        } catch (IndexOutOfBoundsException ioobe){
+            System.out.println("ERROR: El numero elegido no es una opcion");
+            return;
+        }
+
+        try {
+            System.out.println("Introduce la marca (Actual: " + vehiculo.getMarca() + "):");
+            vehiculo.setMarca(teclado.nextLine());
+            compruebaVacio(vehiculo.getMarca());
+            System.out.println("Introduce el modelo (Actual: " + vehiculo.getModelo() + "):");
+            vehiculo.setModelo(teclado.nextLine());
+            compruebaVacio(vehiculo.getModelo());
+            System.out.println("Introduce el numero de plazas (Actual: " + vehiculo.getPlazas() + "):");
+        } catch (IllegalArgumentException iae){
+                System.out.println(iae.getMessage());
+                return;
+            }
+
+        Integer plazas, precio;
+        try {
+            plazas = Integer.parseInt(teclado.nextLine());
+            System.out.println("Introduce el precio base (Actual: " + vehiculo.getPrecioBase() +"):");
+            precio = Integer.parseInt(teclado.nextLine());
+            vehiculo.setPlazas(plazas);
+            vehiculo.setPrecioBase(precio);
+
+        } catch (NumberFormatException nfe){
+            nfe.printStackTrace();
+            System.out.println("Error: Vehiculo no modificado");
+            return;
+        }
+
+        try{
+            boolean correcto = vehiculoDAO.modificaVehiulo(vehiculo);
+            if(correcto){
+                System.out.println("\n El vehiculo se ha modificado correctamente! \n");
+            } else {
+                System.out.println("\n El vehiculo no se ha podido modificar \n");
+            }
+
+        } catch (SQLException sqle){
+            System.out.println("Ha habido un error con la base de datos");
+            return;
+        }
+
+    }
+
+    private void compruebaVacio (String campo) throws IllegalArgumentException {
+        if(campo.isEmpty()){
+            throw new IllegalArgumentException("El campo no puede estar vacio");
+        }
     }
 
     private void verVentasEnDetalle(){
@@ -447,6 +526,5 @@ public class Menu {
     //TODO: Eliminar vehiculos que no se hayan usado en ninguna venta
 
     //-----Otras funcionalidades-----
-    //TODO: Poder modificar un vehiculo
     //TODO: Zona privada para poder moficar los datos de usuario.
 }
