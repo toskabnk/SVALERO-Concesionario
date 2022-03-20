@@ -87,4 +87,13 @@ public class VentaDAO {
         }
         return ventas;
     }
+
+    public boolean borraVenta(Integer id) throws SQLException{
+        String sql = "DELETE FROM VENTAS WHERE id_venta = ?";
+
+        PreparedStatement st = connection.prepareStatement(sql);
+        st.setInt(1, id);
+        int rows = st.executeUpdate();
+        return rows == 1;
+    }
 }
