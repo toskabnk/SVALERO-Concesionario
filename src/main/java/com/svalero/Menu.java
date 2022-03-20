@@ -497,10 +497,10 @@ public class Menu {
         if(!usuarioActual.getRol().equals("USER")){
             System.out.println("Quieres eliminar la venta seleccionada? S/N");
             String eleccion = teclado.nextLine();
-            if(eleccion.equals("S")){
+            if(eleccion.toLowerCase().equals("s")){
                 System.out.println("Confirma la eleccion S/N");
                 eleccion = teclado.nextLine();
-                if(eleccion.equals("S")){
+                if(eleccion.toLowerCase().equals("s")){
                     try{
                         VentaDAO ventaDAO = new VentaDAO(connection);
                         ventaDAO.borraVenta(venta.getIdVenta());
