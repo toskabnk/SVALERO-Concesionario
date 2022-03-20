@@ -6,6 +6,7 @@ import com.svalero.concesionario.exception.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -112,6 +113,7 @@ public class Menu {
             System.out.println("1. Ver mis compras");
             System.out.println("2. Ver mis compras en detalle");
             System.out.println("3. Buscar vehiculo por marca");
+            System.out.println("4. Zona privada");
             System.out.println("0. Salir");
             System.out.print("Opcion elegida: ");
             opcion = teclado.nextLine();
@@ -127,6 +129,9 @@ public class Menu {
                 case "3":
                     buscarVehiculo();
                     break;
+                case "4":
+                    zonaPrivadaCliente();
+                    break;
                 case "0":
                     close();
                     System.exit(0);
@@ -136,6 +141,167 @@ public class Menu {
                     break;
             }
         } while (!opcion.equals("0"));
+    }
+
+    private void zonaPrivadaCliente(){
+        String opcion;
+        do{
+            System.out.println("Que quieres cambiar:");
+            System.out.println("--Cambios de usuario--");
+            System.out.println("1. Nombre");
+            System.out.println("2. Telefono");
+            System.out.println("3. Email");
+            System.out.println("4. Direccion");
+            System.out.println("5. Provincia");
+            System.out.println("6. Codigo Postal");
+            System.out.println("7. Contraseña");
+            System.out.println("0. Salir");
+            System.out.print("Opcion: ");
+            opcion = teclado.nextLine();
+
+            switch (opcion){
+                case "1":
+                    modificaUsuario("nombre");
+                    break;
+                case "2":
+                    modificaUsuario("telefono");
+                    break;
+                case "3":
+                    modificaUsuario("email");
+                    break;
+                case "4":
+                    modificaCliente("direccion");
+                    break;
+                case "5":
+                    modificaCliente("provincia");
+                    break;
+                case "6":
+                    modificaCliente("codigoPostal");
+                    break;
+                case "7":
+                    modificaContraseniaUsuario("contraseña");
+                    break;
+                case "0":
+                    menuUsuario();
+                    break;
+                default:
+                    System.out.println("Opcion elegida incorrecta");
+
+
+            }
+        } while (!opcion.equals("0"));
+
+
+    }
+
+    private void modificaCliente(String campo){
+        ClienteDAO clienteDAO = new ClienteDAO(connection);
+        Cliente cliente;
+
+        try{
+            cliente = clienteDAO.getCliente(usuarioActual).orElseThrow(ClienteNoEncontrado::new);
+            if(campo.equals("direccion")){
+                System.out.println("La direccion actual es: " + cliente.getDireccion());
+            } else if (campo.equals("provincia")){
+                System.out.println("La provincia actual es: " + cliente.getProvincia());
+            } else if (campo.equals("codigoPostal")){
+                System.out.println("El codigo postal actual es:" + cliente.getCodigoPostal());
+            }
+            System.out.println("Introduce el nuevo valor: ");
+            String valor = teclado.nextLine();
+            boolean correcto;
+            correcto = clienteDAO.modificaCliente(campo, valor, usuarioActual.getIdUsuario());
+            if(correcto) System.out.println("Modificado correctamente!");
+        } catch (SQLException sqle){
+            System.out.println("Ha habido un error con la base de datos");
+        } catch (ClienteNoEncontrado cne){
+            System.out.println(cne.getMessage());
+        }
+    }
+
+    private void modificaContraseniaUsuario(String contraseña){
+        UsuarioDAO usuarioDAO = new UsuarioDAO(connection);
+        Usuario usuario = usuarioActual;
+
+        System.out.println("Introduce la contraseña actual");
+        String actual = teclado.nextLine();
+
+        try{
+            usuario = usuarioDAO.getUsuario(usuarioActual.getNombreUsuario(), actual).orElseThrow(UsuarioNoEncontrado::new);
+            System.out.println("Introduce la nueva contraseña");
+            String nueva = teclado.nextLine();
+            usuario.setContraseña(nueva);
+
+            boolean correcto;
+            correcto = usuarioDAO.modificaUsuario("contraseña", nueva, usuarioActual.getIdUsuario());
+            if(correcto){
+                System.out.println("Contraseña cambiada correctamente!");
+            }
+        } catch (SQLException sqle){
+            System.out.println("Ha habido un error con la base de datos");
+            sqle.printStackTrace();
+            return;
+        } catch (UsuarioNoEncontrado une){
+            System.out.println("Contraseña incorrecta");
+            return;
+        }
+
+    }
+
+    private void modificaUsuario(String campo){
+        UsuarioDAO usuarioDAO = new UsuarioDAO(connection);
+
+        if(campo.equals("nombre")) {
+            System.out.println("Nombre actual:" + usuarioActual.getNombre() + " " +
+                    usuarioActual.getApellidos1() + " " +
+                    usuarioActual.getApellidos2());
+            System.out.println("Introduce el nombre primero:");
+            String nombre = teclado.nextLine();
+            System.out.println("Introduce tu primer apellido:");
+            String apellido1 = teclado.nextLine();
+            System.out.println("Introduce tu segundo apellido:");
+            String apellido2 = teclado.nextLine();
+            try {
+                boolean correctoNombre, correctoApellidos1, correctoApellidos2;
+
+                connection.setAutoCommit(false);
+
+                correctoNombre = usuarioDAO.modificaUsuario("nombre", nombre, usuarioActual.getIdUsuario());
+                correctoApellidos1 = usuarioDAO.modificaUsuario("apellido1", apellido1, usuarioActual.getIdUsuario());
+                correctoApellidos2 = usuarioDAO.modificaUsuario("apellido2", apellido2, usuarioActual.getIdUsuario());
+
+                connection.commit();
+                connection.setAutoCommit(true);
+
+                if (correctoNombre && correctoApellidos1 && correctoApellidos2) {
+                    System.out.println("El nombre se ha modificado correctamente!");
+                } else {
+                    System.out.println("Algo ha pasado, no se ha podido modificar el nombre");
+                }
+            } catch (SQLException sqle) {
+                System.out.println("Ha habido un error con la base de datos");
+                sqle.printStackTrace();
+            }
+        } else {
+            System.out.print("Valor anterior del " + campo + ": ");
+            if(campo.equals("telefono")){
+                System.out.println(usuarioActual.getTelefono());
+            } else if(campo.equals("email")){
+                System.out.println(usuarioActual.getEmail());
+            }
+
+            System.out.println("Introduce el nuevo valor:");
+            String valor = teclado.nextLine();
+
+            try{
+                boolean correcto;
+                correcto = usuarioDAO.modificaUsuario(campo, valor, usuarioActual.getIdUsuario());
+                if(correcto) System.out.println("Se ha modificado correctamente el " + campo);
+            } catch (SQLException sqle) {
+                System.out.println("Ha habido un error con la base de datos");
+                sqle.printStackTrace();
+            }
+        }
     }
 
     private void buscarVehiculo(){
@@ -575,5 +741,4 @@ public class Menu {
     //TODO: Eliminar vehiculos que no se hayan usado en ninguna venta
 
     //-----Otras funcionalidades-----
-    //TODO: Zona privada para poder moficar los datos de usuario.
 }
