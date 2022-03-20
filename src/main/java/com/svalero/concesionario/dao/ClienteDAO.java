@@ -67,6 +67,7 @@ public class ClienteDAO {
             cliente.setDni(res.getString("dni"));
             cliente.setIdUsuario(res.getInt("id_usuario"));
             cliente.setDireccion(res.getString("direccion"));
+            cliente.setProvincia(res.getString("provincia"));
             cliente.setCodigoPostal(res.getString("codigopostal"));
             cliente.setNombreUsuario(usuario.getNombreUsuario());
             cliente.setContraseña(usuario.getContraseña());
@@ -100,6 +101,7 @@ public class ClienteDAO {
             cliente.setIdUsuario(res.getInt("id_usuario"));
             cliente.setDireccion(res.getString("direccion"));
             cliente.setCodigoPostal(res.getString("codigopostal"));
+            cliente.setProvincia(res.getString("provincia"));
             Usuario usuario = usuarioDAO.getUsuario(cliente);
             cliente.setNombreUsuario(usuario.getNombreUsuario());
             cliente.setContraseña(usuario.getContraseña());
@@ -112,5 +114,19 @@ public class ClienteDAO {
         }
 
         return cliente;
+    }
+
+    public boolean modificaCliente(String campo, String valor, Integer id) throws SQLException, NumberFormatException{
+        String sql = "UPDATE CLIENTE SET " + campo + " = ? WHERE id_usuario = ?";
+
+        PreparedStatement st = connection.prepareStatement(sql);
+        if(campo.equals("codigoPostal")){
+            st.setInt(1, Integer.parseInt(valor));
+        } else {
+            st.setString(1, valor);
+        }
+        st.setInt(2,id);
+        int rows = st.executeUpdate();
+        return rows == 1;
     }
 }

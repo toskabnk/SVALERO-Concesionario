@@ -71,6 +71,7 @@ public class UsuarioDAO {
             usuario.setApellidos1(res.getString("apellido1"));
             usuario.setApellidos2(res.getString("apellido2"));
             usuario.setTelefono(res.getString("telefono"));
+            usuario.setEmail(res.getString("email"));
             usuario.setRol(res.getString("rol"));
         }
         st.close();
@@ -123,9 +124,20 @@ public class UsuarioDAO {
             usuario.setApellidos1(res.getString("apellido1"));
             usuario.setApellidos2(res.getString("apellido2"));
             usuario.setTelefono(res.getString("telefono"));
+            usuario.setEmail(res.getString("email"));
             usuario.setRol(res.getString("rol"));
         }
 
         return Optional.ofNullable(usuario);
+    }
+
+    public boolean modificaUsuario(String campo, String valor, Integer id) throws  SQLException{
+        String sql = "UPDATE USUARIO SET " + campo + " = ? WHERE id_usuario = ?";
+
+        PreparedStatement st = connection.prepareStatement(sql);
+        st.setString(1, valor);
+        st.setInt(2, id);
+        int rows = st.executeUpdate();
+        return rows == 1;
     }
 }
