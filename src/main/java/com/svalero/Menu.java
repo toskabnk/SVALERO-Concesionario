@@ -493,6 +493,24 @@ public class Menu {
         System.out.println(cliente.toString());
         System.out.println("\n Vehiculo comprado por el cliente: ");
         System.out.println(vehiculo.toString());
+
+        if(!usuarioActual.getRol().equals("USER")){
+            System.out.println("Quieres eliminar la venta seleccionada? S/N");
+            String eleccion = teclado.nextLine();
+            if(eleccion.toLowerCase().equals("s")){
+                System.out.println("Confirma la eleccion S/N");
+                eleccion = teclado.nextLine();
+                if(eleccion.toLowerCase().equals("s")){
+                    try{
+                        VentaDAO ventaDAO = new VentaDAO(connection);
+                        ventaDAO.borraVenta(venta.getIdVenta());
+                    } catch (SQLException sqle){
+                        System.out.println("Ha habido un error con la base de datos");
+                    }
+                    System.out.println("Venta eliminada!");
+                }
+            }
+        }
     }
 
     private void verVentaCliente() {
@@ -738,7 +756,6 @@ public class Menu {
     //Parte de funcionalidad de busqueda
 
     //Parte de dar de baja
-    //TODO: Eliminar vehiculos que no se hayan usado en ninguna venta
 
     //-----Otras funcionalidades-----
 }
