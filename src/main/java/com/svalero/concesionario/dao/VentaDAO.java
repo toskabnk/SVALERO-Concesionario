@@ -88,6 +88,12 @@ public class VentaDAO {
         return ventas;
     }
 
+    /**
+     * Borra una venta de la BD
+     * @param id Identificador de la Venta a borrar
+     * @return true si se ha borrado correctamente
+     * @throws SQLException Si hay algun error no especifico lanzado por la BD
+     */
     public boolean borraVenta(Integer id) throws SQLException{
         String sql = "DELETE FROM VENTAS WHERE id_venta = ?";
 

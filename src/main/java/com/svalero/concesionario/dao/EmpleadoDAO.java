@@ -2,7 +2,6 @@ package com.svalero.concesionario.dao;
 
 import com.svalero.concesionario.domain.Empleado;
 import com.svalero.concesionario.domain.Usuario;
-import oracle.jdbc.proxy.annotation.Pre;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
