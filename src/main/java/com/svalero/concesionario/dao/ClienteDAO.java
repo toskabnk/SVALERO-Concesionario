@@ -47,6 +47,7 @@ public class ClienteDAO {
             cliente.setRol(usuario.getRol());
             clientes.add(cliente);
         }
+        st.close();
         return clientes;
     }
 
@@ -78,7 +79,7 @@ public class ClienteDAO {
             cliente.setEmail(usuario.getTelefono());
             cliente.setRol(usuario.getRol());
         }
-
+        st.close();
         return Optional.ofNullable(cliente);
     }
 
@@ -112,10 +113,19 @@ public class ClienteDAO {
             cliente.setEmail(usuario.getTelefono());
             cliente.setRol(usuario.getRol());
         }
-
+        st.close();
         return cliente;
     }
 
+    /**
+     * Modifica el valor de un campo de un Cliente pasados por parametros
+     * @param campo El campo del valor que se quiere modificar
+     * @param valor El valor nuevo que se va a introducir
+     * @param id El id del Cliente a modificar
+     * @return true si se ha modificado el campo correctamente
+     * @throws SQLException Si hay algun error no especifico lanzado por la BD
+     * @throws NumberFormatException Si al modificar el campo codigoPostal el valor introducido no es un numero
+     */
     public boolean modificaCliente(String campo, String valor, Integer id) throws SQLException, NumberFormatException{
         String sql = "UPDATE CLIENTE SET " + campo + " = ? WHERE id_usuario = ?";
 
@@ -127,6 +137,7 @@ public class ClienteDAO {
         }
         st.setInt(2,id);
         int rows = st.executeUpdate();
+        st.close();
         return rows == 1;
     }
 }

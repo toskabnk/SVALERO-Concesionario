@@ -2,7 +2,6 @@ package com.svalero.concesionario.dao;
 
 import com.svalero.concesionario.domain.Empleado;
 import com.svalero.concesionario.domain.Usuario;
-import oracle.jdbc.proxy.annotation.Pre;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -49,6 +48,7 @@ public class EmpleadoDAO {
             empleado.setRol(usuario.getRol());
             empleados.add(empleado);
         }
+        st.close();
         return empleados;
     }
 
@@ -83,6 +83,7 @@ public class EmpleadoDAO {
             empleado.setEmail(usuario.getTelefono());
             empleado.setRol(usuario.getRol());
         }
+        st.close();
         return empleado;
     }
 }

@@ -129,6 +129,12 @@ public class VehiculoDAO {
         return vehiculo;
     }
 
+    /**
+     * Modifica los valores de los campos de un Vehiculo
+     * @param vehiculo El vehiculo anterior pero con los datos modificados
+     * @return true si se ha modificado correctamente
+     * @throws SQLException Si hay algun error no especifico lanzado por la BD
+     */
     public boolean modificaVehiulo(Vehiculo vehiculo) throws SQLException {
         String sql = "UPDATE VEHICULO SET marca = ?, modelo = ?, plazas = ?, precioBase = ? WHERE referencia = ?";
 
@@ -142,6 +148,11 @@ public class VehiculoDAO {
         return rows == 1;
     }
 
+    /**
+     * Devuelve todas las marcas distintas que hay guardadas en la BD
+     * @return ArrayList con todas las marcas distintas de la BD
+     * @throws SQLException Si hay algun error no especifico lanzado por la BD
+     */
     public ArrayList<String> getMarcas() throws SQLException{
         String sql = "SELECT marca FROM VEHICULO GROUP BY marca";
         ArrayList<String> marcas = new ArrayList<>();
@@ -155,6 +166,12 @@ public class VehiculoDAO {
         return marcas;
     }
 
+    /**
+     * Devuelve todos los vehiculos de la marca que se introduce por parametro
+     * @param marca Marca a buscar en la BD
+     * @return ArrayList de Vehiculo que contiene todos los Vehiculos encontrados
+     * @throws SQLException Si hay algun error no especifico lanzado por la BD
+     */
     public ArrayList<Vehiculo> findByMarca(String marca) throws SQLException{
         String sql = "SELECT * FROM VEHICULO WHERE marca = ?";
         ArrayList<Vehiculo> vehiculos = new ArrayList<>();
@@ -171,6 +188,7 @@ public class VehiculoDAO {
             vehiculo.setPrecioBase(res.getInt("precioBase"));
             vehiculos.add(vehiculo);
         }
+        st.close();
         return vehiculos;
     }
 }

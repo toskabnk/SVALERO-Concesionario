@@ -85,15 +85,23 @@ public class VentaDAO {
             venta.setPrecioTotal(res.getInt("precioTotal"));
             ventas.add(venta);
         }
+        st.close();
         return ventas;
     }
 
+    /**
+     * Borra una venta de la BD
+     * @param id Identificador de la Venta a borrar
+     * @return true si se ha borrado correctamente
+     * @throws SQLException Si hay algun error no especifico lanzado por la BD
+     */
     public boolean borraVenta(Integer id) throws SQLException{
         String sql = "DELETE FROM VENTAS WHERE id_venta = ?";
 
         PreparedStatement st = connection.prepareStatement(sql);
         st.setInt(1, id);
         int rows = st.executeUpdate();
+        st.close();
         return rows == 1;
     }
 }

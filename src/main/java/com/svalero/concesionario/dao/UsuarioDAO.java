@@ -127,10 +127,18 @@ public class UsuarioDAO {
             usuario.setEmail(res.getString("email"));
             usuario.setRol(res.getString("rol"));
         }
-
+        st.close();
         return Optional.ofNullable(usuario);
     }
 
+    /**
+     * Modifica el valor de campo del Usuario pasado por parametros
+     * @param campo El campo de Usuario que se quiere modificar
+     * @param valor El valor nuevo que se quiere introducir
+     * @param id El identificador del Usuario que se quiere modificar
+     * @return true si el valor del campo se ha modificado correctamente
+     * @throws SQLException Si hay algun error no especifico lanzado por la BD
+     */
     public boolean modificaUsuario(String campo, String valor, Integer id) throws  SQLException{
         String sql = "UPDATE USUARIO SET " + campo + " = ? WHERE id_usuario = ?";
 
@@ -138,6 +146,7 @@ public class UsuarioDAO {
         st.setString(1, valor);
         st.setInt(2, id);
         int rows = st.executeUpdate();
+        st.close();
         return rows == 1;
     }
 }

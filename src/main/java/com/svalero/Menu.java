@@ -6,7 +6,6 @@ import com.svalero.concesionario.exception.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -18,16 +17,16 @@ public class Menu {
     private Connection connection;
     private Usuario usuarioActual;
 
-    public Menu(){
+    public Menu() {
         teclado = new Scanner(System.in);
     }
 
-    public void muestraMenu(){
+    public void muestraMenu() {
         connect();
         login();
 
-        System.out.println("Bienvenido "+usuarioActual.getNombre());
-        if(usuarioActual.getRol().equals("USER")){
+        System.out.println("Bienvenido " + usuarioActual.getNombre());
+        if (usuarioActual.getRol().equals("USER")) {
             menuUsuario();
         } else {
             menuAdmin();
@@ -42,13 +41,13 @@ public class Menu {
         String contraseña = teclado.nextLine();
 
         UsuarioDAO usuarioDAO = new UsuarioDAO(connection);
-        try{
+        try {
             usuarioActual = usuarioDAO.getUsuario(nombre, contraseña).orElseThrow(UsuarioNoEncontrado::new);
-        } catch (SQLException sqle){
+        } catch (SQLException sqle) {
             System.out.println("Ha habido un error con la base de datos");
             sqle.printStackTrace();
             System.exit(0);
-        } catch (UsuarioNoEncontrado une){
+        } catch (UsuarioNoEncontrado une) {
             System.out.println(une.getMessage());
             System.exit(0);
         }
@@ -57,7 +56,7 @@ public class Menu {
 
     private void menuAdmin() {
         String opcion;
-        do{
+        do {
             System.out.println("Consola de administracion del concesionario");
             System.out.println("Por favor, elige una opcion:");
             System.out.println("1. Añadir un vehiculo");
@@ -72,7 +71,7 @@ public class Menu {
             opcion = teclado.nextLine();
             System.out.println("");
 
-            switch (opcion){
+            switch (opcion) {
                 case "1":
                     altaVehiculo();
                     break;
@@ -107,7 +106,7 @@ public class Menu {
 
     private void menuUsuario() {
         String opcion;
-        do{
+        do {
             System.out.println("Consola de administracion del concesionario");
             System.out.println("Por favor, elige una opcion:");
             System.out.println("1. Ver mis compras");
@@ -119,7 +118,7 @@ public class Menu {
             opcion = teclado.nextLine();
             System.out.println("");
 
-            switch (opcion){
+            switch (opcion) {
                 case "1":
                     verVentaCliente();
                     break;
@@ -143,23 +142,24 @@ public class Menu {
         } while (!opcion.equals("0"));
     }
 
-    private void zonaPrivadaCliente(){
+    private void zonaPrivadaCliente() {
         String opcion;
-        do{
+        do {
             System.out.println("Que quieres cambiar:");
             System.out.println("--Cambios de usuario--");
             System.out.println("1. Nombre");
             System.out.println("2. Telefono");
             System.out.println("3. Email");
-            System.out.println("4. Direccion");
-            System.out.println("5. Provincia");
-            System.out.println("6. Codigo Postal");
-            System.out.println("7. Contraseña");
+            System.out.println("4. Contraseña");
+            System.out.println("--Cambios de cliente--");
+            System.out.println("5. Direccion");
+            System.out.println("6. Provincia");
+            System.out.println("7. Codigo Postal");
             System.out.println("0. Salir");
             System.out.print("Opcion: ");
             opcion = teclado.nextLine();
 
-            switch (opcion){
+            switch (opcion) {
                 case "1":
                     modificaUsuario("nombre");
                     break;
@@ -169,16 +169,16 @@ public class Menu {
                 case "3":
                     modificaUsuario("email");
                     break;
-                case "4":
+                case "5":
                     modificaCliente("direccion");
                     break;
-                case "5":
+                case "6":
                     modificaCliente("provincia");
                     break;
-                case "6":
+                case "7":
                     modificaCliente("codigoPostal");
                     break;
-                case "7":
+                case "4":
                     modificaContraseniaUsuario("contraseña");
                     break;
                 case "0":
@@ -190,43 +190,41 @@ public class Menu {
 
             }
         } while (!opcion.equals("0"));
-
-
     }
 
-    private void modificaCliente(String campo){
+    private void modificaCliente(String campo) {
         ClienteDAO clienteDAO = new ClienteDAO(connection);
         Cliente cliente;
 
-        try{
+        try {
             cliente = clienteDAO.getCliente(usuarioActual).orElseThrow(ClienteNoEncontrado::new);
-            if(campo.equals("direccion")){
+            if (campo.equals("direccion")) {
                 System.out.println("La direccion actual es: " + cliente.getDireccion());
-            } else if (campo.equals("provincia")){
+            } else if (campo.equals("provincia")) {
                 System.out.println("La provincia actual es: " + cliente.getProvincia());
-            } else if (campo.equals("codigoPostal")){
+            } else if (campo.equals("codigoPostal")) {
                 System.out.println("El codigo postal actual es:" + cliente.getCodigoPostal());
             }
             System.out.println("Introduce el nuevo valor: ");
             String valor = teclado.nextLine();
             boolean correcto;
             correcto = clienteDAO.modificaCliente(campo, valor, usuarioActual.getIdUsuario());
-            if(correcto) System.out.println("Modificado correctamente!");
-        } catch (SQLException sqle){
+            if (correcto) System.out.println("Modificado correctamente!");
+        } catch (SQLException sqle) {
             System.out.println("Ha habido un error con la base de datos");
-        } catch (ClienteNoEncontrado cne){
+        } catch (ClienteNoEncontrado cne) {
             System.out.println(cne.getMessage());
         }
     }
 
-    private void modificaContraseniaUsuario(String contraseña){
+    private void modificaContraseniaUsuario(String contraseña) {
         UsuarioDAO usuarioDAO = new UsuarioDAO(connection);
         Usuario usuario = usuarioActual;
 
         System.out.println("Introduce la contraseña actual");
         String actual = teclado.nextLine();
 
-        try{
+        try {
             usuario = usuarioDAO.getUsuario(usuarioActual.getNombreUsuario(), actual).orElseThrow(UsuarioNoEncontrado::new);
             System.out.println("Introduce la nueva contraseña");
             String nueva = teclado.nextLine();
@@ -234,24 +232,24 @@ public class Menu {
 
             boolean correcto;
             correcto = usuarioDAO.modificaUsuario("contraseña", nueva, usuarioActual.getIdUsuario());
-            if(correcto){
+            if (correcto) {
                 System.out.println("Contraseña cambiada correctamente!");
             }
-        } catch (SQLException sqle){
+        } catch (SQLException sqle) {
             System.out.println("Ha habido un error con la base de datos");
             sqle.printStackTrace();
             return;
-        } catch (UsuarioNoEncontrado une){
+        } catch (UsuarioNoEncontrado une) {
             System.out.println("Contraseña incorrecta");
             return;
         }
 
     }
 
-    private void modificaUsuario(String campo){
+    private void modificaUsuario(String campo) {
         UsuarioDAO usuarioDAO = new UsuarioDAO(connection);
 
-        if(campo.equals("nombre")) {
+        if (campo.equals("nombre")) {
             System.out.println("Nombre actual:" + usuarioActual.getNombre() + " " +
                     usuarioActual.getApellidos1() + " " +
                     usuarioActual.getApellidos2());
@@ -284,19 +282,19 @@ public class Menu {
             }
         } else {
             System.out.print("Valor anterior del " + campo + ": ");
-            if(campo.equals("telefono")){
+            if (campo.equals("telefono")) {
                 System.out.println(usuarioActual.getTelefono());
-            } else if(campo.equals("email")){
+            } else if (campo.equals("email")) {
                 System.out.println(usuarioActual.getEmail());
             }
 
             System.out.println("Introduce el nuevo valor:");
             String valor = teclado.nextLine();
 
-            try{
+            try {
                 boolean correcto;
                 correcto = usuarioDAO.modificaUsuario(campo, valor, usuarioActual.getIdUsuario());
-                if(correcto) System.out.println("Se ha modificado correctamente el " + campo);
+                if (correcto) System.out.println("Se ha modificado correctamente el " + campo);
             } catch (SQLException sqle) {
                 System.out.println("Ha habido un error con la base de datos");
                 sqle.printStackTrace();
@@ -304,49 +302,49 @@ public class Menu {
         }
     }
 
-    private void buscarVehiculo(){
+    private void buscarVehiculo() {
         VehiculoDAO vehiculoDAO = new VehiculoDAO(connection);
         String marca;
 
         System.out.println("Selecciona la marca de la que buscar un vehiculo: ");
-        try{
+        try {
             ArrayList<String> marcas;
             ArrayList<Vehiculo> vehiculos;
 
             marcas = vehiculoDAO.getMarcas();
 
             int index = 1;
-            for(String str : marcas){
+            for (String str : marcas) {
                 System.out.println(index + ". " + str);
                 index++;
             }
             System.out.print("Opcion elegida: ");
             String opcion = teclado.nextLine();
             Integer indiceMarca = Integer.parseInt(opcion);
-            marca = marcas.get(indiceMarca-1);
+            marca = marcas.get(indiceMarca - 1);
 
             vehiculos = vehiculoDAO.findByMarca(marca);
             index = 1;
-            for(Vehiculo veh : vehiculos){
+            for (Vehiculo veh : vehiculos) {
                 System.out.println(index + ". " + veh.toString());
                 index++;
             }
 
 
-        } catch (SQLException sqle){
+        } catch (SQLException sqle) {
             System.out.println("Ha habido un error con la base de datos");
             return;
-        } catch (NumberFormatException nfe){
+        } catch (NumberFormatException nfe) {
             System.out.println("ERROR: Lo que has introducido no es un numero");
             return;
-        } catch (IndexOutOfBoundsException ioobe){
+        } catch (IndexOutOfBoundsException ioobe) {
             System.out.println("ERROR: El numero elegido no es una opcion");
             return;
         }
 
     }
 
-    private void modificaVehiculo(){
+    private void modificaVehiculo() {
         VehiculoDAO vehiculoDAO = new VehiculoDAO(connection);
         Vehiculo vehiculo;
 
@@ -357,21 +355,21 @@ public class Menu {
             vehiculos = vehiculoDAO.findAll();
 
             int indice = 1;
-            for(Vehiculo aux : vehiculos){
+            for (Vehiculo aux : vehiculos) {
                 System.out.println(indice + ". " + aux.toString());
                 indice++;
             }
             System.out.print("Opcion elegida: ");
             String opcion = teclado.nextLine();
             Integer indiceVehiculo = Integer.parseInt(opcion);
-            vehiculo = vehiculos.get(indiceVehiculo-1);
-        } catch (SQLException sqle){
+            vehiculo = vehiculos.get(indiceVehiculo - 1);
+        } catch (SQLException sqle) {
             System.out.println("Ha habido un error con la base de datos");
             return;
-        } catch (NumberFormatException nfe){
+        } catch (NumberFormatException nfe) {
             System.out.println("ERROR: Lo que has introducido no es un numero");
             return;
-        } catch (IndexOutOfBoundsException ioobe){
+        } catch (IndexOutOfBoundsException ioobe) {
             System.out.println("ERROR: El numero elegido no es una opcion");
             return;
         }
@@ -384,66 +382,66 @@ public class Menu {
             vehiculo.setModelo(teclado.nextLine());
             compruebaVacio(vehiculo.getModelo());
             System.out.println("Introduce el numero de plazas (Actual: " + vehiculo.getPlazas() + "):");
-        } catch (IllegalArgumentException iae){
-                System.out.println(iae.getMessage());
-                return;
-            }
+        } catch (IllegalArgumentException iae) {
+            System.out.println(iae.getMessage());
+            return;
+        }
 
         Integer plazas, precio;
         try {
             plazas = Integer.parseInt(teclado.nextLine());
-            System.out.println("Introduce el precio base (Actual: " + vehiculo.getPrecioBase() +"):");
+            System.out.println("Introduce el precio base (Actual: " + vehiculo.getPrecioBase() + "):");
             precio = Integer.parseInt(teclado.nextLine());
             vehiculo.setPlazas(plazas);
             vehiculo.setPrecioBase(precio);
 
-        } catch (NumberFormatException nfe){
+        } catch (NumberFormatException nfe) {
             nfe.printStackTrace();
             System.out.println("Error: Vehiculo no modificado");
             return;
         }
 
-        try{
+        try {
             boolean correcto = vehiculoDAO.modificaVehiulo(vehiculo);
-            if(correcto){
+            if (correcto) {
                 System.out.println("\n El vehiculo se ha modificado correctamente! \n");
             } else {
                 System.out.println("\n El vehiculo no se ha podido modificar \n");
             }
 
-        } catch (SQLException sqle){
+        } catch (SQLException sqle) {
             System.out.println("Ha habido un error con la base de datos");
             return;
         }
 
     }
 
-    private void compruebaVacio (String campo) throws IllegalArgumentException {
-        if(campo.isEmpty()){
+    private void compruebaVacio(String campo) throws IllegalArgumentException {
+        if (campo.isEmpty()) {
             throw new IllegalArgumentException("El campo no puede estar vacio");
         }
     }
 
-    private void verVentasEnDetalle(){
+    private void verVentasEnDetalle() {
         Venta venta;
         Empleado empleado;
         Cliente cliente;
         Vehiculo vehiculo;
 
-        try{
+        try {
             Integer indiceVenta;
             ArrayList<Venta> ventas;
             VentaDAO ventaDAO = new VentaDAO(connection);
             ClienteDAO clienteDAO = new ClienteDAO(connection);
 
-            if(usuarioActual.getRol().equals("USER")){
+            if (usuarioActual.getRol().equals("USER")) {
                 cliente = clienteDAO.getCliente(usuarioActual).orElseThrow(ClienteNoEncontrado::new);
                 ventas = ventaDAO.findVenta(cliente.getDni());
             } else {
                 ventas = ventaDAO.findAll();
             }
 
-            if(ventas.isEmpty()){
+            if (ventas.isEmpty()) {
                 System.out.println("No hay ninguna venta ¿Raro verdad? Alguien la tiene que haber liado, revisa la BD");
                 return;
             } else {
@@ -456,18 +454,18 @@ public class Menu {
                 System.out.print("Seleccione una venta para ver en mas detalle: ");
                 String opcion = teclado.nextLine();
                 indiceVenta = Integer.parseInt(opcion);
-                venta = ventas.get(indiceVenta-1);
+                venta = ventas.get(indiceVenta - 1);
             }
-        } catch (SQLException sqle){
+        } catch (SQLException sqle) {
             System.out.println("Ha habido un error con la base de datos");
             return;
-        } catch (NumberFormatException nfe){
+        } catch (NumberFormatException nfe) {
             System.out.println("ERROR: Lo que has introducido no es un numero");
             return;
-        } catch (IndexOutOfBoundsException ioobe){
+        } catch (IndexOutOfBoundsException ioobe) {
             System.out.println("ERROR: El numero elegido no es una opcion");
             return;
-        } catch (ClienteNoEncontrado cne){
+        } catch (ClienteNoEncontrado cne) {
             System.out.println(cne.getMessage());
             return;
         }
@@ -494,20 +492,22 @@ public class Menu {
         System.out.println("\n Vehiculo comprado por el cliente: ");
         System.out.println(vehiculo.toString());
 
-        if(!usuarioActual.getRol().equals("USER")){
+        if (!usuarioActual.getRol().equals("USER")) {
             System.out.println("Quieres eliminar la venta seleccionada? S/N");
             String eleccion = teclado.nextLine();
-            if(eleccion.toLowerCase().equals("s")){
+            if (eleccion.toLowerCase().equals("s")) {
                 System.out.println("Confirma la eleccion S/N");
                 eleccion = teclado.nextLine();
-                if(eleccion.toLowerCase().equals("s")){
-                    try{
+                boolean correcto;
+                if (eleccion.toLowerCase().equals("s")) {
+                    try {
                         VentaDAO ventaDAO = new VentaDAO(connection);
-                        ventaDAO.borraVenta(venta.getIdVenta());
-                    } catch (SQLException sqle){
+                        correcto = ventaDAO.borraVenta(venta.getIdVenta());
+                    } catch (SQLException sqle) {
                         System.out.println("Ha habido un error con la base de datos");
+                        return;
                     }
-                    System.out.println("Venta eliminada!");
+                    if (correcto) System.out.println("Venta eliminada!");
                 }
             }
         }
@@ -518,19 +518,19 @@ public class Menu {
         ClienteDAO clienteDAO = new ClienteDAO(connection);
         ArrayList<Venta> ventas;
 
-        try{
+        try {
             Cliente cliente = clienteDAO.getCliente(usuarioActual).orElseThrow(ClienteNoEncontrado::new);
             ventas = ventaDAO.findVenta(cliente.getDni());
-            if(ventas.isEmpty()){
+            if (ventas.isEmpty()) {
                 System.out.println("No tienes ninguna compra realizada en el concesionario");
             } else {
-                for (Venta venta : ventas){
+                for (Venta venta : ventas) {
                     System.out.println(venta.toString());
                 }
             }
-        } catch (SQLException sqle){
+        } catch (SQLException sqle) {
             System.out.println("Ha habido un error con la base de datos");
-        } catch (ClienteNoEncontrado cne){
+        } catch (ClienteNoEncontrado cne) {
             System.out.println(cne.getMessage());
         }
     }
@@ -545,19 +545,19 @@ public class Menu {
         try {
             validarDNI(dni);
             ventas = ventaDAO.findVenta(dni);
-        } catch (DniNoValido dnv){
+        } catch (DniNoValido dnv) {
             System.out.println(dnv.getMessage());
             return;
-        } catch (SQLException sqle){
+        } catch (SQLException sqle) {
             System.out.println("Ha habido un error con la base de datos");
             return;
         }
 
-        if(ventas.isEmpty()){
+        if (ventas.isEmpty()) {
             System.out.println("No hay ninguna venta registrada con el DNI introducido.");
         } else {
             int index = 1;
-            for (Venta venta : ventas){
+            for (Venta venta : ventas) {
                 System.out.println(index + ".- " + venta.toString());
                 index++;
             }
@@ -576,88 +576,88 @@ public class Menu {
         Vehiculo vehiculo;
 
         System.out.println("Por favor, selecciona el empleado que ha hecho la venta:");
-        try{
+        try {
             ArrayList<Empleado> empleados;
             Integer indiceEmpleado;
             Integer auxEmpleado = 0;
 
             empleados = empleadoDAO.findAll();
 
-            for(Empleado emp : empleados){
-                System.out.println((auxEmpleado+1) + ". " + emp.toString());
+            for (Empleado emp : empleados) {
+                System.out.println((auxEmpleado + 1) + ". " + emp.toString());
                 auxEmpleado++;
             }
             System.out.print("Opcion elegida: ");
             String opcion = teclado.nextLine();
             indiceEmpleado = Integer.parseInt(opcion);
-            empleado = empleados.get(indiceEmpleado-1);
-        } catch (SQLException sqle){
+            empleado = empleados.get(indiceEmpleado - 1);
+        } catch (SQLException sqle) {
             System.out.println("Ha habido un error con la base de datos");
             sqle.printStackTrace();
             return;
-        } catch (NumberFormatException nfe){
+        } catch (NumberFormatException nfe) {
             System.out.println("ERROR: Lo que has introducido no es un numero");
             System.out.println("Venta no añadida");
             return;
-        } catch (IndexOutOfBoundsException ioobe){
+        } catch (IndexOutOfBoundsException ioobe) {
             System.out.println("ERROR: El numero elegido no es una opcion");
             return;
         }
 
         System.out.println("Por favor, selecciona al cliente:");
-        try{
+        try {
             ArrayList<Cliente> clientes;
             Integer auxCliente = 0;
             Integer indiceCliente;
 
             clientes = clienteDAO.findAll();
 
-            for(Cliente cl : clientes){
-                System.out.println((auxCliente+1) + ". " + cl.toString());
+            for (Cliente cl : clientes) {
+                System.out.println((auxCliente + 1) + ". " + cl.toString());
                 auxCliente++;
             }
             System.out.print("Opcion elegida: ");
             String opcion = teclado.nextLine();
             indiceCliente = Integer.parseInt(opcion);
-            cliente = clientes.get(indiceCliente-1);
-        } catch (SQLException sqle){
+            cliente = clientes.get(indiceCliente - 1);
+        } catch (SQLException sqle) {
             System.out.println("Ha habido un error con la base de datos");
             sqle.printStackTrace();
             return;
-        } catch (NumberFormatException nfe){
+        } catch (NumberFormatException nfe) {
             System.out.println("ERROR: Lo que has introducido no es un numero");
             System.out.println("Venta no añadida");
             return;
-        } catch (IndexOutOfBoundsException ioobe){
+        } catch (IndexOutOfBoundsException ioobe) {
             System.out.println("ERROR: El numero elegido no es una opcion");
             return;
         }
 
         System.out.println("Por favor, selecciona el modelo de vehiculo que se ha vendido:");
-        try{
+        try {
             ArrayList<Vehiculo> vehiculos;
             Integer auxVehiculo = 0;
             Integer indiceVehiculo;
 
             vehiculos = vehiculoDAO.findAll();
 
-            for(Vehiculo cl : vehiculos){
-                System.out.println((auxVehiculo+1) + ". " + cl.toString());
+            for (Vehiculo cl : vehiculos) {
+                System.out.println((auxVehiculo + 1) + ". " + cl.toString());
                 auxVehiculo++;
             }
             System.out.print("Opcion elegida: ");
             String opcion = teclado.nextLine();
             indiceVehiculo = Integer.parseInt(opcion);
-            vehiculo = vehiculos.get(indiceVehiculo-1);
-        } catch (SQLException sqle){
+            vehiculo = vehiculos.get(indiceVehiculo - 1);
+        } catch (SQLException sqle) {
             System.out.println("Ha habido un error con la base de datos");
             sqle.printStackTrace();
             return;
-        } catch (NumberFormatException nfe){
+        } catch (NumberFormatException nfe) {
             System.out.println("ERROR: Lo que has introducido no es un numero");
             System.out.println("Venta no añadida");
             return;
-        } catch (IndexOutOfBoundsException ioobe){
+        } catch (IndexOutOfBoundsException ioobe) {
             System.out.println("ERROR: El numero elegido no es una opcion");
             return;
         }
@@ -668,18 +668,18 @@ public class Menu {
         System.out.println("Introduce el precio total:");
         String precioTotal = teclado.nextLine();
         Integer precio;
-        try{
-            precio=Integer.parseInt(precioTotal);
-        } catch (NumberFormatException nfe){
+        try {
+            precio = Integer.parseInt(precioTotal);
+        } catch (NumberFormatException nfe) {
             System.out.println("ERROR: Lo que has introducido no es un numero");
             return;
         }
 
         Venta venta = new Venta(empleado.getDni(), cliente.getDni(), vehiculo.getReferencia(), matricula, color, precio);
 
-        try{
+        try {
             ventaDAO.altaVenta(venta);
-        } catch (SQLException sqle){
+        } catch (SQLException sqle) {
             System.out.println("Ha habido un error con la base de datos");
             sqle.printStackTrace();
         }
@@ -693,19 +693,19 @@ public class Menu {
         VehiculoDAO vehiculoDAO = new VehiculoDAO(connection);
 
         System.out.println("Lista de vehiculos:");
-        try{
+        try {
             ArrayList<Vehiculo> vehiculos = vehiculoDAO.findAll();
-            for(Vehiculo vehiculo : vehiculos){
+            for (Vehiculo vehiculo : vehiculos) {
                 System.out.println(vehiculo.toString());
             }
-        } catch (SQLException sqle){
+        } catch (SQLException sqle) {
             System.out.println("Ha habido un error con la base de datos.");
             sqle.printStackTrace();
         }
         System.out.println("");
     }
 
-    private void altaVehiculo(){
+    private void altaVehiculo() {
         VehiculoDAO vehiculoDAO = new VehiculoDAO(connection);
 
         System.out.println("Introduce la marca:");
@@ -719,43 +719,32 @@ public class Menu {
             System.out.println("Introduce el precio base:");
             precio = Integer.parseInt(teclado.nextLine());
 
-        } catch (NumberFormatException nfe){
+        } catch (NumberFormatException nfe) {
             nfe.printStackTrace();
             System.out.println("Error: Vehiculo no introducido");
             return;
         }
 
         Vehiculo vehiculo = new Vehiculo(marca.trim(), modelo.trim(), plazas, precio);
-        try{
+        try {
             vehiculoDAO.altaVehiculo(vehiculo);
             System.out.println("El vehiculo se ha añadido correctamente.");
-        } catch (YaExisteVehiculo yev){
+        } catch (YaExisteVehiculo yev) {
             System.out.println(yev.getMessage());
-        } catch (SQLException sqle){
+        } catch (SQLException sqle) {
             System.out.println("Ha habido un error con la base de datos");
             sqle.printStackTrace();
         }
         System.out.println("");
     }
 
-    public void connect(){
+    public void connect() {
         database = new Database();
         connection = database.getConnection();
     }
 
-    public void close(){
+    public void close() {
         database.close();
         System.out.println("Base de datos desconectada.");
     }
-
-    //-----Requisitos-----
-    //Parte de dar de alta
-
-    //Parte de listado y vista en detalle
-
-    //Parte de funcionalidad de busqueda
-
-    //Parte de dar de baja
-
-    //-----Otras funcionalidades-----
 }
