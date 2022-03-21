@@ -500,14 +500,16 @@ public class Menu {
             if(eleccion.toLowerCase().equals("s")){
                 System.out.println("Confirma la eleccion S/N");
                 eleccion = teclado.nextLine();
+                boolean correcto;
                 if(eleccion.toLowerCase().equals("s")){
                     try{
                         VentaDAO ventaDAO = new VentaDAO(connection);
-                        ventaDAO.borraVenta(venta.getIdVenta());
+                        correcto = ventaDAO.borraVenta(venta.getIdVenta());
                     } catch (SQLException sqle){
                         System.out.println("Ha habido un error con la base de datos");
+                        return;
                     }
-                    System.out.println("Venta eliminada!");
+                    if(correcto) System.out.println("Venta eliminada!");
                 }
             }
         }
