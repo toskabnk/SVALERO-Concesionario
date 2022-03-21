@@ -188,6 +188,7 @@ public class VehiculoDAO {
             vehiculo.setPrecioBase(res.getInt("precioBase"));
             vehiculos.add(vehiculo);
         }
+        st.close();
         return vehiculos;
     }
 }

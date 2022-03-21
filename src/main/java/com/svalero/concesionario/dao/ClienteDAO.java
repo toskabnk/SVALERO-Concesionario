@@ -47,6 +47,7 @@ public class ClienteDAO {
             cliente.setRol(usuario.getRol());
             clientes.add(cliente);
         }
+        st.close();
         return clientes;
     }
 
@@ -78,7 +79,7 @@ public class ClienteDAO {
             cliente.setEmail(usuario.getTelefono());
             cliente.setRol(usuario.getRol());
         }
-
+        st.close();
         return Optional.ofNullable(cliente);
     }
 
@@ -112,7 +113,7 @@ public class ClienteDAO {
             cliente.setEmail(usuario.getTelefono());
             cliente.setRol(usuario.getRol());
         }
-
+        st.close();
         return cliente;
     }
 
@@ -136,6 +137,7 @@ public class ClienteDAO {
         }
         st.setInt(2,id);
         int rows = st.executeUpdate();
+        st.close();
         return rows == 1;
     }
 }

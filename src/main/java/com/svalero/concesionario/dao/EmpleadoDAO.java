@@ -48,6 +48,7 @@ public class EmpleadoDAO {
             empleado.setRol(usuario.getRol());
             empleados.add(empleado);
         }
+        st.close();
         return empleados;
     }
 
@@ -82,6 +83,7 @@ public class EmpleadoDAO {
             empleado.setEmail(usuario.getTelefono());
             empleado.setRol(usuario.getRol());
         }
+        st.close();
         return empleado;
     }
 }

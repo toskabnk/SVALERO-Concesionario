@@ -85,6 +85,7 @@ public class VentaDAO {
             venta.setPrecioTotal(res.getInt("precioTotal"));
             ventas.add(venta);
         }
+        st.close();
         return ventas;
     }
 
@@ -100,6 +101,7 @@ public class VentaDAO {
         PreparedStatement st = connection.prepareStatement(sql);
         st.setInt(1, id);
         int rows = st.executeUpdate();
+        st.close();
         return rows == 1;
     }
 }

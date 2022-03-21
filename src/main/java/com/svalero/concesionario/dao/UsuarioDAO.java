@@ -127,7 +127,7 @@ public class UsuarioDAO {
             usuario.setEmail(res.getString("email"));
             usuario.setRol(res.getString("rol"));
         }
-
+        st.close();
         return Optional.ofNullable(usuario);
     }
 
@@ -146,6 +146,7 @@ public class UsuarioDAO {
         st.setString(1, valor);
         st.setInt(2, id);
         int rows = st.executeUpdate();
+        st.close();
         return rows == 1;
     }
 }
