@@ -36,6 +36,7 @@ Antes de la creacion de la aplicacion web puedes comprobar el funcionamiento de 
 - Se debe de tener la base de datos de [Oracle XE](https://www.oracle.com/es/database/technologies/appdev/xe.html).
 - Ejecutar el script [Concesionario.sql](sql/CONCESIONARIO.sql) y [Inserts.sql](sql/INSERTS.sql) si ya quieres tener datos de ejemplo sobre los que trabajar.
 - Tener instalado al menos el JDK de [Java 11](https://adoptopenjdk.net/).
+- Tener descargado y ejecutado TomCat 8.5
 
 
 
