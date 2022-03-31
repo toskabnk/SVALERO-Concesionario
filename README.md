@@ -23,7 +23,7 @@ Antes de la creacion de la aplicacion web puedes comprobar el funcionamiento de 
 - [ ] Listado y vista detalle.
 - [ ] Funcionalidad (Busqueda).
 - [ ] Dar de baja.
-- [ ] Login de usuarios.
+- [x] Login de usuarios.
 - [ ] Funcionalidad (Modificar).
 - [ ] Funcionalidad (Relaciones).
 - [ ] Zona privada.

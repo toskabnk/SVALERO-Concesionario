@@ -27,6 +27,7 @@ public class Database {
     public void close(){
         try{
             connection.close();
+            System.out.println("Desconectado de la base de datos.");
         } catch (SQLException sqle){
             System.out.println("No se ha podido cerrar la conexion. Comprueba que la conexion estaba iniciada y que los datos son correctos.");
             sqle.getStackTrace();
