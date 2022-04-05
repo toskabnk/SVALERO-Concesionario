@@ -9,28 +9,30 @@
     }
 %>
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Concesionario</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-</head>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Concesionario</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    </head>
 
-<body>
-    <div class="container">
-        <h2>
-            <p class="text-center">Panel principal de administracion del Concesionario</p>
-        </h2>
+    <body>
         <div class="container">
-            <p> Bienvenido
-                <%
+            <h2>
+                <p class="text-center">Panel principal de administracion del Concesionario</p>
+            </h2>
+            <div class="container">
+                <p> Bienvenido
+                    <%
                     out.print(n);
                 %>
-                    <form action="logout" method="post">
-                    <input type="submit" name="logout" value="Cerrar sesion" />
-                </form>
-            </p>
+                        <form action="logout" method="post">
+                            <input type="submit" name="logout" value="Cerrar sesion" />
+                        </form>
+                </p>
+            </div>
+            <a href="altaVehiculo.jsp">A&ntilde;adir vehiculo nuevo</a>
         </div>
-</body>
+    </body>
 
 </html>
