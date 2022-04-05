@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet("/")
+@WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
     public LoginServlet(){
@@ -19,32 +19,17 @@ public class LoginServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("GET");
         HttpSession sesion = req.getSession();
-        String nombreUsuario;
-        String contrasenia;
-        if(sesion.isNew()){
-            System.out.println("Sesion nueva creada");
-            nombreUsuario = req.getParameter("nombre");
-            contrasenia = req.getParameter("password");
-        } else {
-            if(sesion.getAttribute("nombre") == null){
-                System.out.println("Sesion vacia");
-                nombreUsuario = req.getParameter("nombre");
-                contrasenia = req.getParameter("password");
-            } else {
-                System.out.println("Sesion anterior cargada");
-                nombreUsuario = sesion.getAttribute("nombre").toString();
-                contrasenia = sesion.getAttribute("password").toString();
-            }
-        }
+        String nombreUsuario = req.getParameter("nombre");
+        String contrasenia = req.getParameter("password");
+
         if(nombreUsuario == null || contrasenia == null || !ValidaSesion.validar(nombreUsuario, contrasenia)){
             RequestDispatcher dispatcher = req.getRequestDispatcher("login.jsp");
             dispatcher.forward(req, resp);
         } else {
             sesion.setAttribute("nombre", nombreUsuario);
             sesion.setAttribute("password", contrasenia);
-            RequestDispatcher dispatcher = req.getRequestDispatcher("main.jsp");
+            RequestDispatcher dispatcher = req.getRequestDispatcher("index.jsp");
             dispatcher.forward(req, resp);
         }
     }

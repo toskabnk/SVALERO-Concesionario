@@ -19,7 +19,7 @@ Antes de la creacion de la aplicacion web puedes comprobar el funcionamiento de 
 - [x] Repositorio de Github
 
 ## Requisitos implementando la aplicacion web:
-- [ ] Dar de alta.
+- [x] Dar de alta.
 - [ ] Listado y vista detalle.
 - [ ] Funcionalidad (Busqueda).
 - [ ] Dar de baja.
