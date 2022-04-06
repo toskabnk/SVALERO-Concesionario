@@ -35,6 +35,7 @@
                 <a href="altaVehiculo.jsp" class="list-group-item list-group-item-action">A&ntilde;adir vehiculo nuevo</a>
                 <a href="verVehiculos.jsp" class="list-group-item list-group-item-action">Ver todos los vehiculos</a>
                 <a href="verVentas.jsp" class="list-group-item list-group-item-action">Ver todas las ventas</a>
+                <a href="buscaVenta.jsp" class="list-group-item list-group-item-action">Buscar una venta</a>
             </div>
         </div>
     </body>
