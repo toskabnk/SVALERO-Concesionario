@@ -20,7 +20,7 @@ Antes de la creacion de la aplicacion web puedes comprobar el funcionamiento de 
 
 ## Requisitos implementando la aplicacion web:
 - [x] Dar de alta.
-- [ ] Listado y vista detalle.
+- [x] Listado y vista detalle.
 - [ ] Funcionalidad (Busqueda).
 - [ ] Dar de baja.
 - [x] Login de usuarios.
@@ -28,7 +28,7 @@ Antes de la creacion de la aplicacion web puedes comprobar el funcionamiento de 
 - [ ] Funcionalidad (Relaciones).
 - [ ] Zona privada.
 - [ ] Uso de imagenes<sup>[1](#opcional)</sup>.
-- [ ] Funcionalidad (Javascript)<sup>[1](#opcional)</sup>.
+- [x] Funcionalidad (Javascript)<sup>[1](#opcional)</sup>.
 - [ ] Funcionalidad (Paginacion)<sup>[1](#opcional)</sup>.
 - [ ] Trabajar con la informacion de una tercera tabla<sup>[1](#opcional)</sup>.
 

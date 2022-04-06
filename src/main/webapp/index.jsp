@@ -31,7 +31,11 @@
                         </form>
                 </p>
             </div>
-            <a href="altaVehiculo.jsp">A&ntilde;adir vehiculo nuevo</a>
+            <div class="list-group">
+                <a href="altaVehiculo.jsp" class="list-group-item list-group-item-action">A&ntilde;adir vehiculo nuevo</a>
+                <a href="verVehiculos.jsp" class="list-group-item list-group-item-action">Ver todos los vehiculos</a>
+                <a href="verVentas.jsp" class="list-group-item list-group-item-action">Ver todas las ventas</a>
+            </div>
         </div>
     </body>
 
