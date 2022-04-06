@@ -18,7 +18,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 
 @WebServlet("/altaVehiculo")
-public class altaVehiculoServlet extends HttpServlet {
+public class AltaVehiculoServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("POST");
