@@ -192,6 +192,12 @@ public class VehiculoDAO {
         return vehiculos;
     }
 
+    /**
+     * Devuelve todos los vehiculos encontrados por el valor introducido por paramatro
+     * @param modelo Modelo del vehiculo a buscar en la base de datos, no necesita ser exacta
+     * @return ArrayList de Vehiculo que contiene todos los Vehiculos encontrados
+     * @throws SQLException Si hay algun error no especifico lanzado por la BD
+     */
     public ArrayList<Vehiculo> findByModelo(String modelo) throws SQLException{
         String sql = "SELECT * FROM VEHICULO WHERE INSTR(modelo, ?) != 0";
         ArrayList<Vehiculo> vehiculos = new ArrayList<>();
@@ -212,6 +218,13 @@ public class VehiculoDAO {
         return vehiculos;
     }
 
+    /**
+     * Devuelve todos los vehiculos encontrados por los valores de marca y modelo introducidos por parametro
+     * @param marca Marca del vehiculo a mostrar, necesita ser exacta.
+     * @param modelo Modelo del vehiculo a buscar en la base de datos, no necesita ser exacta
+     * @return ArrayList de Vehiculo que contiene todos los Vehiculos encontrados
+     * @throws SQLException Si hay algun error no especifico lanzado por la BD
+     */
     public ArrayList<Vehiculo> findByMarcaModelo(String marca, String modelo) throws SQLException{
         String sql = "SELECT * FROM VEHICULO WHERE marca = ? AND INSTR(modelo, ?) != 0";
         ArrayList<Vehiculo> vehiculos = new ArrayList<>();
