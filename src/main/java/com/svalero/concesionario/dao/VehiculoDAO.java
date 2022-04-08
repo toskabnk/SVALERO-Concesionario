@@ -191,4 +191,45 @@ public class VehiculoDAO {
         st.close();
         return vehiculos;
     }
+
+    public ArrayList<Vehiculo> findByModelo(String modelo) throws SQLException{
+        String sql = "SELECT * FROM VEHICULO WHERE INSTR(modelo, ?) != 0";
+        ArrayList<Vehiculo> vehiculos = new ArrayList<>();
+
+        PreparedStatement st = connection.prepareStatement(sql);
+        st.setString(1, modelo);
+        ResultSet res = st.executeQuery();
+        while (res.next()){
+            Vehiculo vehiculo = new Vehiculo();
+            vehiculo.setReferencia(res.getString("referencia"));
+            vehiculo.setMarca(res.getString("marca"));
+            vehiculo.setModelo(res.getString("modelo"));
+            vehiculo.setPlazas(res.getInt("plazas"));
+            vehiculo.setPrecioBase(res.getInt("precioBase"));
+            vehiculos.add(vehiculo);
+        }
+        st.close();
+        return vehiculos;
+    }
+
+    public ArrayList<Vehiculo> findByMarcaModelo(String marca, String modelo) throws SQLException{
+        String sql = "SELECT * FROM VEHICULO WHERE marca = ? AND INSTR(modelo, ?) != 0";
+        ArrayList<Vehiculo> vehiculos = new ArrayList<>();
+
+        PreparedStatement st = connection.prepareStatement(sql);
+        st.setString(1, marca);
+        st.setString(2, modelo);
+        ResultSet res = st.executeQuery();
+        while (res.next()){
+            Vehiculo vehiculo = new Vehiculo();
+            vehiculo.setReferencia(res.getString("referencia"));
+            vehiculo.setMarca(res.getString("marca"));
+            vehiculo.setModelo(res.getString("modelo"));
+            vehiculo.setPlazas(res.getInt("plazas"));
+            vehiculo.setPrecioBase(res.getInt("precioBase"));
+            vehiculos.add(vehiculo);
+        }
+        st.close();
+        return vehiculos;
+    }
 }
