@@ -10,7 +10,7 @@ Antes de la creacion de la aplicacion web puedes comprobar el funcionamiento de 
 ## Requisitos antes de implementar la aplicacion web:
 - [x] Dar de alta. Se da de alta vehiculos nuevos.
 - [x] Listado y vista detalle. Se pueden ver toda la informacion de la ventas (En detalle) y de los vehiculos.
-- [x] Funcionalidad (Busqueda). Se pueden buscar las ventas por el DNI del cliente.
+- [x] Funcionalidad (Busqueda). Se pueden buscar las ventas por el DNI del cliente y los vehiculos por marca y modelo.
 - [x] Dar de baja. Se pueden eliminar las ventas desde la vista en detalle de las ventas.
 - [x] Login de usuarios. Cada usuario registrado puede logearse y mostrara distintas opciones segun su rol.
 - [x] Funcionalidad (Modificar). Se puede modificar la informacion de un vehiculo.
