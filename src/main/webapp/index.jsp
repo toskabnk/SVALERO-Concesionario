@@ -37,6 +37,7 @@
                 <a href="verVentas.jsp" class="list-group-item list-group-item-action">Ver todas las ventas</a>
                 <a href="buscaVenta.jsp" class="list-group-item list-group-item-action">Buscar una venta</a>
                 <a href="buscaVehiculo.jsp" class="list-group-item list-group-item-action">Buscar vehiculos</a>
+                <a href="altaVenta.jsp" class="list-group-item list-group-item-action">Nueva venta</a>
             </div>
         </div>
     </body>
