@@ -34,17 +34,27 @@ public class AltaVehiculoServlet extends HttpServlet {
         String modelo = req.getParameter("modelo");
         Integer plazas = Integer.parseInt(req.getParameter("plazas"));
         Integer precio = Integer.parseInt(req.getParameter("precio"));
+        String referencia = req.getParameter("referencia");
 
         if(nombreUsuario == null || contrasenia == null || !ValidaSesion.validar(nombreUsuario, contrasenia)){
             RequestDispatcher dispatcher = req.getRequestDispatcher("login.jsp");
             dispatcher.forward(req, resp);
         } else {
-            Vehiculo vehiculo = new Vehiculo(marca.trim(), modelo.trim(), plazas, precio);
+            Vehiculo vehiculo = new Vehiculo(referencia.trim(), marca.trim(), modelo.trim(), plazas, precio);
             Database database = new Database();
             VehiculoDAO vehiculoDAO = new VehiculoDAO(database.getConnection());
             try {
-                vehiculoDAO.altaVehiculo(vehiculo);
-                out.println("<div class='alert alert-success' role='alert'>El vehiculo se ha añadido correctamente</div>");
+                if(referencia != null){
+                    boolean correcto = vehiculoDAO.modificaVehiulo(vehiculo);
+                    if (correcto) {
+                        out.println("<div class='alert alert-success' role='alert'>El vehiculo se ha modificado correctamente</div>");
+                    } else {
+                        out.println("<div class='alert alert-danger' role='alert'>No se ha podido modificar el vehiculo</div>");
+                    }
+                } else {
+                    vehiculoDAO.altaVehiculo(vehiculo);
+                    out.println("<div class='alert alert-success' role='alert'>El vehiculo se ha añadido correctamente</div>");
+                }
             } catch (YaExisteVehiculo yev) {
                 database.close();
                 out.println("<div class='alert alert-danger' role='alert'>El vehiculo ya existe</div>");

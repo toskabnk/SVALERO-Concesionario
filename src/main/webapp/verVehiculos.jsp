@@ -36,7 +36,7 @@
                         out.println("<ul class='list-group'>");
                         ArrayList<Vehiculo> vehiculos = vehiculoDAO.findAll();
                         for (Vehiculo vehiculo : vehiculos) {
-                            out.println("<li class='list-group-item'>" +vehiculo.toString() + "</a></li>");
+                            out.println("<li class='list-group-item d-flex justify-content-between align-items-center'>" + vehiculo.toString() + "<a class=\"btn btn-warning\" href=\"altaVehiculo.jsp?id=" + vehiculo.getReferencia() + "\" role=\"button\">Modificar</a></a></li>");
                         }
                         out.println("</ul>");
                     } catch (SQLException sqle) {

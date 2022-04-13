@@ -1,11 +1,38 @@
+<%@ page import="com.svalero.concesionario.dao.Database" %>
+<%@ page import="com.svalero.concesionario.dao.VehiculoDAO" %>
+<%@ page import="com.svalero.concesionario.domain.Vehiculo" %>
+<%@ page import="java.sql.Connection" %>
+<%@ page import="java.sql.SQLException" %>
+
 <!DOCTYPE html>
 <html lang="es">
 
 <%
+    String texto = "Enviar";
+    String color = "primary";
+    String parametro = request.getParameter("id");
+    Boolean modifica = false;
+    Vehiculo vehiculo = null;
     String n=(String)session.getAttribute("nombre");
     if(n == null){
         String redirectURL = "login.jsp";
         response.sendRedirect(redirectURL);
+    }
+    if(parametro != null){
+        texto = "Modificar";
+        color = "warning";
+        modifica = true;
+        Database database = new Database();
+        Connection connection = database.getConnection();
+        VehiculoDAO vehiculoDAO = new VehiculoDAO(connection);
+
+        try {
+            vehiculo = vehiculoDAO.getVehiculo(parametro);
+        } catch (SQLException sqle) {
+            out.println("<div class='alert alert-danger' role='alert'>Parametro incorrecto</div>");
+        } finally {
+            database.close();
+        }
     }
 %>
 
@@ -34,22 +61,23 @@
             <form>
                 <div class="form-group">
                     <label for="marca">Introduce la marca:</label>
-                    <input type="text" class="form-control" id="marca" name="marca" placeholder="Toyota">
+                    <input type="text" class="form-control" id="marca" name="marca" <% if(vehiculo!=null){out.println("value=\"" + vehiculo.getMarca() + "\"");} %> placeholder="Toyota">
                 </div>
                 <div class="form-group">
                     <label for="modelo">Introduce el modelo:</label>
-                    <input type="text" class="form-control" id="modelo" name="modelo" placeholder="Prius">
+                    <input type="text" class="form-control" id="modelo" name="modelo" <% if(vehiculo!=null){out.println("value=\"" + vehiculo.getModelo() + "\"");} %> placeholder="Prius">
                 </div>
                 <div class="form-group">
                     <label for="plazas">Introduce el numero de plazas:</label>
-                    <input type="text" class="form-control" id="plazas" name="plazas" placeholder="5">
+                    <input type="text" class="form-control" id="plazas" name="plazas" <% if(vehiculo!=null){out.println("value=\"" + vehiculo.getPlazas() + "\"");} %> placeholder="5">
                 </div>
                 <div class="form-group">
                     <label for="precio">Introduce el precio:</label>
-                    <input type="text" class="form-control" id="precio" name="precio" placeholder="20000">
+                    <input type="text" class="form-control" id="precio" name="precio" <% if(vehiculo!=null){out.println("value=\"" + vehiculo.getPrecioBase() + "\"");} %> placeholder="20000">
+                    <input type="hidden" class="form-control" id="referencia" name="referencia" value="<%=parametro%>">
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Enviar</button>
+                    <button type="submit" class="btn btn-<%=color%>"><%=texto%></button>
                     <button type="button" onclick="window.location.href='index.jsp'" class="btn btn-danger">Volver</button>
                 </div>
                 <div id="result"></div>

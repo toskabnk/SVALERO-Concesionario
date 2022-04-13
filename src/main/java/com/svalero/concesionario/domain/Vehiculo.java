@@ -20,6 +20,14 @@ public class Vehiculo {
         this.precioBase = precioBase;
     }
 
+    public Vehiculo(String referencia, String marca, String modelo, Integer plazas, Integer precioBase) {
+        this.referencia = referencia;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.plazas = plazas;
+        this.precioBase = precioBase;
+    }
+
     public String getReferencia() {
         return referencia;
     }
