@@ -70,6 +70,7 @@
                                 out.println(cliente.toString());
                                 out.println(empleado.toString());
                                 out.println(vehiculo.toString());
+                                out.print("<a class=\"btn btn-danger\" href=\"confirmaEliminar.jsp?id=" + aux.getIdVenta() + "\" role=\"button\">Eliminar</a>");
                                 out.println("</div></div></div>");
                                 id++;
                         }
