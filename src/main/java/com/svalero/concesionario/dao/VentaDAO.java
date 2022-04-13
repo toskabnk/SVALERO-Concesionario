@@ -104,4 +104,32 @@ public class VentaDAO {
         st.close();
         return rows == 1;
     }
+
+    /**
+     * Busca la venta que tiene el ID pasado por parametro
+     * @param id ID de la venta a buscar
+     * @return ArrayList con las ventas que tengan ese ID
+     * @throws SQLException Si hay algun error no especifico lanzado por la BD
+     */
+    public ArrayList<Venta> findById(Integer id) throws SQLException{
+        String sql = "SELECT * FROM VENTAS WHERE id_venta = ?";
+        ArrayList<Venta> ventas = new ArrayList<>();
+
+        PreparedStatement st = connection.prepareStatement(sql);
+        st.setInt(1, id);
+        ResultSet res = st.executeQuery();
+        while (res.next()) {
+            Venta venta = new Venta();
+            venta.setIdVenta(res.getInt("id_venta"));
+            venta.setDni_empleado(res.getString("dni_empleado"));
+            venta.setDni_cliente(res.getString("dni_cliente"));
+            venta.setReferencia(res.getString("referencia"));
+            venta.setMatricula(res.getString("matricula"));
+            venta.setColor(res.getString("color"));
+            venta.setPrecioTotal(res.getInt("precioTotal"));
+            ventas.add(venta);
+        }
+        st.close();
+        return ventas;
+    }
 }
