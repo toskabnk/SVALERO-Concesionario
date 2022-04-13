@@ -40,11 +40,12 @@ public class AltaVehiculoServlet extends HttpServlet {
             RequestDispatcher dispatcher = req.getRequestDispatcher("login.jsp");
             dispatcher.forward(req, resp);
         } else {
-            Vehiculo vehiculo = new Vehiculo(referencia.trim(), marca.trim(), modelo.trim(), plazas, precio);
             Database database = new Database();
             VehiculoDAO vehiculoDAO = new VehiculoDAO(database.getConnection());
             try {
-                if(referencia != null){
+                System.out.println(referencia);
+                if(!referencia.equals("null")){
+                    Vehiculo vehiculo = new Vehiculo(referencia.trim(), marca.trim(), modelo.trim(), plazas, precio);
                     boolean correcto = vehiculoDAO.modificaVehiulo(vehiculo);
                     if (correcto) {
                         out.println("<div class='alert alert-success' role='alert'>El vehiculo se ha modificado correctamente</div>");
@@ -52,6 +53,7 @@ public class AltaVehiculoServlet extends HttpServlet {
                         out.println("<div class='alert alert-danger' role='alert'>No se ha podido modificar el vehiculo</div>");
                     }
                 } else {
+                    Vehiculo vehiculo = new Vehiculo(marca.trim(), modelo.trim(), plazas, precio);
                     vehiculoDAO.altaVehiculo(vehiculo);
                     out.println("<div class='alert alert-success' role='alert'>El vehiculo se ha añadido correctamente</div>");
                 }
