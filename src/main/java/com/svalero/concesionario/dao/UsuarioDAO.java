@@ -149,4 +149,19 @@ public class UsuarioDAO {
         st.close();
         return rows == 1;
     }
+
+    public boolean modificaUsuario(Usuario usuario) throws  SQLException{
+        String sql = "UPDATE USUARIO SET nombre = ?, apellido1 = ?, apellido2 = ?, telefono = ?, email = ? WHERE id_usuario = ?";
+
+        PreparedStatement st = connection.prepareStatement(sql);
+        st.setString(1, usuario.getNombre());
+        st.setString(2, usuario.getApellidos1());
+        st.setString(3, usuario.getApellidos2());
+        st.setString(4, usuario.getTelefono());
+        st.setString(5, usuario.getEmail());
+        st.setInt(6, usuario.getIdUsuario());
+        int rows = st.executeUpdate();
+        st.close();
+        return rows == 1;
+    }
 }
