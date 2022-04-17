@@ -35,7 +35,7 @@ Antes de la creacion de la aplicacion web puedes comprobar el funcionamiento de 
 ## Requisitos para Entornos de Desarrollo:
 - [x] Crea un repositorio de Github.
 - [x] Para cada funcionalidad se creara una nueva rama feature y se fusionara con develop mediente Pull Request.
-- [ ] Configura un Job en Jenkins para obtener el codigo del proyecto del repositorio y que se compile y empaquete el proyecto.
+- [x] Configura un Job en Jenkins para obtener el codigo del proyecto del repositorio y que se compile y empaquete el proyecto.
 - [x] Añade al Job la configuracion necesaria para que el codigo del proyecto sea analizado por un SonarQube.
 - [x] Instala y ejecuta VisualVM y monitoriza el rendimiento y el uso de memoria de tu aplicacion.
 ### Otras funcionalidades
