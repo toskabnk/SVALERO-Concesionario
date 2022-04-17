@@ -13,7 +13,10 @@ public class ValidaSesion {
         UsuarioDAO usuarioDAO = new UsuarioDAO(database.getConnection());
         Usuario usuarioActual = null;
         try {
+            System.out.println(nombre + " " + password);
             usuarioActual = usuarioDAO.getUsuario(nombre, password).orElseThrow(UsuarioNoEncontrado::new);
+            System.out.println(usuarioActual.getNombreUsuario());
+            System.out.println(usuarioActual.getRol());
             database.close();
         } catch (SQLException sqle) {
             System.out.println("Ha habido un error con la base de datos");
@@ -24,6 +27,8 @@ public class ValidaSesion {
             System.out.println(une.getMessage());
             database.close();
             return false;
+        } finally {
+            database.close();
         }
         return true;
     }

@@ -24,7 +24,9 @@
             <div class="container">
                 <p> Bienvenido
                     <%
+                    out.print("<a href=\"miPerfil.jsp\" class=\"link-primary\">");
                     out.print(n);
+                    out.print("</a>");
                 %>
                         <form action="logout" method="post">
                             <input type="submit" name="logout" value="Cerrar sesion" />
