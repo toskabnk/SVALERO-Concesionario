@@ -32,7 +32,7 @@ public class CogeUsuarioCliente {
         try {
             cliente = clienteDAO.getCliente(usuario).orElseThrow(ClienteNoEncontrado::new);
         } catch (SQLException | ClienteNoEncontrado throwables) {
-            throwables.printStackTrace();
+            System.out.println("No hay usuario");
         }
 
         return cliente;

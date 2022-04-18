@@ -8,6 +8,7 @@
 <html lang="es">
     <%
         String n=(String)session.getAttribute("nombre");
+        String role=(String)session.getAttribute("role");
         if(n == null){
             String redirectURL = "login.jsp";
             response.sendRedirect(redirectURL);
@@ -36,7 +37,11 @@
                         out.println("<ul class='list-group'>");
                         ArrayList<Vehiculo> vehiculos = vehiculoDAO.findAll();
                         for (Vehiculo vehiculo : vehiculos) {
-                            out.println("<li class='list-group-item d-flex justify-content-between align-items-center'>" + vehiculo.toString() + "<a class=\"btn btn-warning\" href=\"altaVehiculo.jsp?id=" + vehiculo.getReferencia() + "\" role=\"button\">Modificar</a></a></li>");
+                            out.println("<li class='list-group-item d-flex justify-content-between align-items-center'>" + vehiculo.toString());
+                                if((role != null) && (role.equals("ADMIN") || role.equals("EMPLOYEE"))){
+                                    out.println("<a class=\"btn btn-warning\" href=\"altaVehiculo.jsp?id=" + vehiculo.getReferencia() + "\" role=\"button\">Modificar</a>");
+                                }
+                            out.println("</li>");
                         }
                         out.println("</ul>");
                     } catch (SQLException sqle) {

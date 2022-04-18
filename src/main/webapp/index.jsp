@@ -3,6 +3,7 @@
 
 <%
     String n=(String)session.getAttribute("nombre");
+    String role=(String)session.getAttribute("role");
     if(n == null){
         String redirectURL = "login.jsp";
         response.sendRedirect(redirectURL);
@@ -34,12 +35,18 @@
                 </p>
             </div>
             <div class="list-group">
-                <a href="altaVehiculo.jsp" class="list-group-item list-group-item-action">A&ntilde;adir vehiculo nuevo</a>
+                <a href="buscaVehiculo.jsp" class="list-group-item list-group-item-action">Buscar vehiculos</a>
                 <a href="verVehiculos.jsp" class="list-group-item list-group-item-action">Ver todos los vehiculos</a>
                 <a href="verVentas.jsp" class="list-group-item list-group-item-action">Ver todas las ventas</a>
+                <%
+                    if((role != null) && (role.equals("ADMIN") || role.equals("EMPLOYEE"))){
+                %>
+                <a href="altaVehiculo.jsp" class="list-group-item list-group-item-action">A&ntilde;adir vehiculo nuevo</a>
                 <a href="buscaVenta.jsp" class="list-group-item list-group-item-action">Buscar una venta</a>
-                <a href="buscaVehiculo.jsp" class="list-group-item list-group-item-action">Buscar vehiculos</a>
                 <a href="altaVenta.jsp" class="list-group-item list-group-item-action">Nueva venta</a>
+                <%
+                    }
+                %>
             </div>
         </div>
     </body>

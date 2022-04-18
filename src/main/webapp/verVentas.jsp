@@ -9,6 +9,7 @@
 <%@ page import="com.svalero.concesionario.domain.Cliente" %>
 <%@ page import="com.svalero.concesionario.dao.UsuarioDAO" %>
 <%@ page import="com.svalero.concesionario.domain.Usuario" %>
+<%@ page import="com.svalero.concesionario.util.CogeUsuarioCliente" %>
 <%@ page import="java.sql.SQLException" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.sql.Connection" %>
@@ -18,6 +19,8 @@
 <html lang="es">
     <%
         String n=(String)session.getAttribute("nombre");
+        String contrasenia = (String) session.getAttribute("password");
+        String role=(String)session.getAttribute("role");
         if(n == null){
             String redirectURL = "login.jsp";
             response.sendRedirect(redirectURL);
@@ -51,9 +54,26 @@
                 <%
                     try {
                     out.println("<div id=\"accordion\">");
-                        ArrayList<Venta> ventas;
+                        ArrayList<Venta> ventas = new ArrayList<Venta>();
                         VentaDAO ventaDAO = new VentaDAO(connection);
-                        ventas = ventaDAO.findAll();
+                        Cliente cliente1 = null;
+                        Usuario usuario = null;
+                        usuario = CogeUsuarioCliente.getUsuario(n, contrasenia, connection);
+                        if(usuario != null){
+                            cliente1 = CogeUsuarioCliente.getCliente(usuario, connection);
+                            System.out.println("Pasa por aqui");
+                            System.out.println(cliente1);
+                        }
+                        if((role != null) && (role.equals("ADMIN") || role.equals("EMPLOYEE"))){
+                            ventas = ventaDAO.findAll();
+                        } else {
+                            System.out.println("Pasa por aqui 1");
+                            if(cliente1 != null){
+                                System.out.println("Pasa por aqui 2");
+                                String dniCliente = cliente1.getDni();
+                                ventas = ventaDAO.findVenta(dniCliente);
+                            }
+                        }
                         Integer id = 1;
                         for (Venta aux : ventas) {
                                 out.print("<div class=\"card\"><div class=\"card-header\" id=\"heading" + id + "\"><h5 class=\"mb-0\"><button class=\"btn btn-link collapsed\" data-toggle=\"collapse\" data-target=\"#collapse" + id + "\" aria-expanded=\"false\" aria-controls=\"collapse" + id + "\">" + aux.toString() + "</button></h5></div>");
@@ -78,7 +98,9 @@
                                 out.println(vehiculo.toString());
                                 out.println("</li>");
                                 out.println("</ul>");
-                                out.print("<a class=\"btn btn-danger\" href=\"confirmaEliminar.jsp?id=" + aux.getIdVenta() + "\" role=\"button\">Eliminar</a>");
+                                if((role != null) && (role.equals("ADMIN") || role.equals("EMPLOYEE"))){
+                                    out.print("<a class=\"btn btn-danger\" href=\"confirmaEliminar.jsp?id=" + aux.getIdVenta() + "\" role=\"button\">Eliminar</a>");
+                                }
                                 out.println("</div></div></div>");
                                 id++;
                         }

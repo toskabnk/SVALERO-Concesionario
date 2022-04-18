@@ -39,9 +39,9 @@ Antes de la creacion de la aplicacion web puedes comprobar el funcionamiento de 
 - [x] Añade al Job la configuracion necesaria para que el codigo del proyecto sea analizado por un SonarQube.
 - [x] Instala y ejecuta VisualVM y monitoriza el rendimiento y el uso de memoria de tu aplicacion.
 ### Otras funcionalidades
-- [ ] Configura maven para poder lanzar un analisis de codigo del proyecto directamente con esta herramienta.
+- [x] Configura maven para poder lanzar un analisis de codigo del proyecto directamente con esta herramienta.
 - [x] Añade algunos test JUnit al proyecto y configura el Job de Jenkins para que se ejecuten cada vez que este se lance.
-- [ ] Añade una release del proyecto al repositorio para que los usuarios puedan descargarse tu aplicacion para usarla directamente.
+- [x] Añade una release del proyecto al repositorio para que los usuarios puedan descargarse tu aplicacion para usarla directamente.
 - [ ] Utiliza el gestor de issues para registrar como features cada una de las funcionalidades que realices del proyecto. Registra tambien, al menos, 3 bugs que hayas encontrado durante el desarrollo.
 - [ ] Diseña el diagrama de clases.
 - [ ] Diseña una pagina web para el proyecto utilizando github-pages.
