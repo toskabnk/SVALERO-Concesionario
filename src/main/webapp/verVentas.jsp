@@ -67,9 +67,17 @@
                                 vehiculo = vehiculoDAO.getVehiculo(aux.getReferencia());
 
                                 out.print("<div id=\"collapse" + id + "\" class=\"collapse\" aria-labelledby=\"heading" + id + "\" data-parent=\"#accordion\"> <div class=\"card-body\">");
-                                out.println(cliente.toString());
+                                out.println("<ul class=\"list-group list-group-flush\">");
+                                out.print("<li class=\"list-group-item\">");
+                                out.print(cliente.toString());
+                                out.println("</li>");
+                                out.print("<li class=\"list-group-item\">");
                                 out.println(empleado.toString());
+                                out.println("</li>");
+                                out.print("<li class=\"list-group-item\">");
                                 out.println(vehiculo.toString());
+                                out.println("</li>");
+                                out.println("</ul>");
                                 out.print("<a class=\"btn btn-danger\" href=\"confirmaEliminar.jsp?id=" + aux.getIdVenta() + "\" role=\"button\">Eliminar</a>");
                                 out.println("</div></div></div>");
                                 id++;

@@ -79,14 +79,10 @@ public class Venta {
 
     @Override
     public String toString() {
-        return "Venta{" +
-                "idVenta=" + idVenta +
-                ", dni_empleado='" + dni_empleado + '\'' +
-                ", dni_cliente='" + dni_cliente + '\'' +
-                ", referencia='" + referencia + '\'' +
+        return "IDVenta=" + idVenta +
+                ", empleado='" + dni_empleado + '\'' +
+                ", cliente='" + dni_cliente + '\'' +
                 ", matricula='" + matricula + '\'' +
-                ", color='" + color + '\'' +
-                ", precioTotal=" + precioTotal +
-                '}';
+                ", precioTotal=" + precioTotal;
     }
 }

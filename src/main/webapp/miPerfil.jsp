@@ -66,6 +66,9 @@
         });
     </script>
     <div class="container">
+        <h2>
+            <p class="text-center">Mi perfil</p>
+        </h2>
         <form action="miPerfil" method="post">
             <div class="form-group">
                 <label for="nombreUsuario">Nombre de usuario</label>

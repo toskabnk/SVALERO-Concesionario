@@ -58,6 +58,9 @@
                 });
         </script>
         <div class="container">
+            <h2>
+                <p class="text-center">Registrar vehiculo nuevo</p>
+            </h2>
             <form>
                 <div class="form-group">
                     <label for="marca">Introduce la marca:</label>

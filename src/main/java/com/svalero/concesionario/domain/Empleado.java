@@ -63,9 +63,7 @@ public class Empleado extends Usuario{
 
     @Override
     public String toString() {
-        return "Dni='" + dni + '\'' +
-                ", departamento='" + departamento + '\'' +
-                ", codigoEmpleado='" + codigoEmpleado + '\'' +
+        return "Empleado -> DNI=" + dni + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", apellidos1='" + apellidos1 + '\'' +
                 ", apellidos2='" + apellidos2;

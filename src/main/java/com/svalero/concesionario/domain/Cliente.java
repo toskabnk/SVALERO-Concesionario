@@ -64,8 +64,8 @@ public class Cliente extends Usuario{
 
     @Override
     public String toString() {
-        return "Cliente:" +
-                "dni='" + dni + '\'' +
+        return "Cliente -> " +
+                "DNI='" + dni + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", apellidos1='" + apellidos1 + '\'' +
                 ", apellidos2='" + apellidos2;
