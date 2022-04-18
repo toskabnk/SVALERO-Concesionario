@@ -105,8 +105,6 @@ public class Usuario {
                 ", nombre='" + nombre + '\'' +
                 ", apellidos1='" + apellidos1 + '\'' +
                 ", apellidos2='" + apellidos2 + '\'' +
-                ", telefono='" + telefono + '\'' +
-                ", email='" + email + '\'' +
-                ", rol='" + rol;
+                ", telefono='" + telefono + '\'';
     }
 }

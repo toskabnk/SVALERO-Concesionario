@@ -71,9 +71,17 @@ public class BuscaVentaServlet extends HttpServlet {
                         vehiculo = vehiculoDAO.getVehiculo(aux.getReferencia());
 
                         out.print("<div id=\"collapse" + id + "\" class=\"collapse\" aria-labelledby=\"heading" + id + "\" data-parent=\"#accordion\"> <div class=\"card-body\">");
+                        out.println("<ul class=\"list-group list-group-flush\">");
+                        out.print("<li class=\"list-group-item\">");
                         out.println(cliente.toString());
+                        out.println("</li>");
+                        out.print("<li class=\"list-group-item\">");
                         out.println(empleado.toString());
+                        out.println("</li>");
+                        out.print("<li class=\"list-group-item\">");
                         out.println(vehiculo.toString());
+                        out.println("</li>");
+                        out.println("</ul>");
                         out.println("</div></div></div>");
                         id++;
                     }

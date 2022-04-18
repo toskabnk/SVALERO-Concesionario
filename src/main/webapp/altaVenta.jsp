@@ -46,6 +46,9 @@
                 });
         </script>
         <div class="container">
+        <h2>
+            <p class="text-center">Alta venta nueva</p>
+        </h2>
             <form>
                 <div class="form-group">
                     <label for="empleado">Selecciona el empleado que ha hecho la venta:</label>

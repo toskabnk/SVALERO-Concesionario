@@ -74,6 +74,6 @@ public class Vehiculo {
                 ", modelo='" + modelo + '\'' +
                 ", plazas=" + plazas +
                 ", precioBase=" + precioBase +
-                '€';
+                "&euro;";
     }
 }
