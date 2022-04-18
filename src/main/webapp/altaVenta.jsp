@@ -16,8 +16,13 @@
 
 <%
     String n=(String)session.getAttribute("nombre");
+    String role=(String)session.getAttribute("role");
     if(n == null){
         String redirectURL = "login.jsp";
+        response.sendRedirect(redirectURL);
+    }
+    if((role != null) && !(role.equals("ADMIN") || role.equals("EMPLOYEE"))){
+        String redirectURL = "index.jsp";
         response.sendRedirect(redirectURL);
     }
     Database database = new Database();
