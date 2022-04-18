@@ -19,6 +19,17 @@ public class Cliente extends Usuario{
         this.codigoPostal = codigoPostal;
     }
 
+    public Cliente(Usuario usuario, String dni, String direccion, String provincia, String codigoPostal) {
+        super(usuario.getIdUsuario(), usuario.getNombreUsuario(), usuario.getContraseña(), usuario.getNombre(), usuario.getApellidos1(), usuario.getApellidos2(), usuario.getTelefono(), usuario.getEmail(), usuario.getRol());
+        this.dni = dni;
+        this.idUsuario = usuario.getIdUsuario();
+        this.direccion = direccion;
+        this.provincia = provincia;
+        this.codigoPostal = codigoPostal;
+    }
+
+
+
     public String getDni() {
         return dni;
     }
@@ -53,8 +64,8 @@ public class Cliente extends Usuario{
 
     @Override
     public String toString() {
-        return "Cliente:" +
-                "dni='" + dni + '\'' +
+        return "Cliente -> " +
+                "DNI='" + dni + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", apellidos1='" + apellidos1 + '\'' +
                 ", apellidos2='" + apellidos2;

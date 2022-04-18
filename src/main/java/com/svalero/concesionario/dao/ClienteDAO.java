@@ -140,4 +140,17 @@ public class ClienteDAO {
         st.close();
         return rows == 1;
     }
+
+    public boolean modificaCliente(Cliente cliente) throws SQLException, NumberFormatException{
+        String sql = "UPDATE CLIENTE SET direccion = ?, provincia = ?, codigopostal = ? WHERE id_usuario = ?";
+
+        PreparedStatement st = connection.prepareStatement(sql);
+        st.setString(1, cliente.getDireccion());
+        st.setString(2, cliente.getProvincia());
+        st.setInt(3,Integer.parseInt(cliente.getCodigoPostal()));
+        st.setInt(4, cliente.getIdUsuario());
+        int rows = st.executeUpdate();
+        st.close();
+        return rows == 1;
+    }
 }

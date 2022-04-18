@@ -191,4 +191,58 @@ public class VehiculoDAO {
         st.close();
         return vehiculos;
     }
+
+    /**
+     * Devuelve todos los vehiculos encontrados por el valor introducido por paramatro
+     * @param modelo Modelo del vehiculo a buscar en la base de datos, no necesita ser exacta
+     * @return ArrayList de Vehiculo que contiene todos los Vehiculos encontrados
+     * @throws SQLException Si hay algun error no especifico lanzado por la BD
+     */
+    public ArrayList<Vehiculo> findByModelo(String modelo) throws SQLException{
+        String sql = "SELECT * FROM VEHICULO WHERE INSTR(modelo, ?) != 0";
+        ArrayList<Vehiculo> vehiculos = new ArrayList<>();
+
+        PreparedStatement st = connection.prepareStatement(sql);
+        st.setString(1, modelo);
+        ResultSet res = st.executeQuery();
+        while (res.next()){
+            Vehiculo vehiculo = new Vehiculo();
+            vehiculo.setReferencia(res.getString("referencia"));
+            vehiculo.setMarca(res.getString("marca"));
+            vehiculo.setModelo(res.getString("modelo"));
+            vehiculo.setPlazas(res.getInt("plazas"));
+            vehiculo.setPrecioBase(res.getInt("precioBase"));
+            vehiculos.add(vehiculo);
+        }
+        st.close();
+        return vehiculos;
+    }
+
+    /**
+     * Devuelve todos los vehiculos encontrados por los valores de marca y modelo introducidos por parametro
+     * @param marca Marca del vehiculo a mostrar, necesita ser exacta.
+     * @param modelo Modelo del vehiculo a buscar en la base de datos, no necesita ser exacta
+     * @return ArrayList de Vehiculo que contiene todos los Vehiculos encontrados
+     * @throws SQLException Si hay algun error no especifico lanzado por la BD
+     */
+    public ArrayList<Vehiculo> findByMarcaModelo(String marca, String modelo) throws SQLException{
+        String sql = "SELECT * FROM VEHICULO WHERE marca = ? AND INSTR(modelo, ?) != 0";
+        ArrayList<Vehiculo> vehiculos = new ArrayList<>();
+
+        PreparedStatement st = connection.prepareStatement(sql);
+        st.setString(1, marca);
+        st.setString(2, modelo);
+        ResultSet res = st.executeQuery();
+        while (res.next()){
+            Vehiculo vehiculo = new Vehiculo();
+            vehiculo.setReferencia(res.getString("referencia"));
+            vehiculo.setMarca(res.getString("marca"));
+            vehiculo.setModelo(res.getString("modelo"));
+            vehiculo.setPlazas(res.getInt("plazas"));
+            vehiculo.setPrecioBase(res.getInt("precioBase"));
+            vehiculos.add(vehiculo);
+        }
+        st.close();
+        return vehiculos;
+    }
 }
