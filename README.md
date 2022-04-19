@@ -42,9 +42,9 @@ Antes de la creacion de la aplicacion web puedes comprobar el funcionamiento de 
 - [x] Configura maven para poder lanzar un analisis de codigo del proyecto directamente con esta herramienta.
 - [x] Añade algunos test JUnit al proyecto y configura el Job de Jenkins para que se ejecuten cada vez que este se lance.
 - [x] Añade una release del proyecto al repositorio para que los usuarios puedan descargarse tu aplicacion para usarla directamente.
-- [ ] Utiliza el gestor de issues para registrar como features cada una de las funcionalidades que realices del proyecto. Registra tambien, al menos, 3 bugs que hayas encontrado durante el desarrollo.
-- [ ] Diseña el diagrama de clases.
-- [ ] Diseña una pagina web para el proyecto utilizando github-pages.
+- [x] Utiliza el gestor de issues para registrar como features cada una de las funcionalidades que realices del proyecto. Registra tambien, al menos, 3 bugs que hayas encontrado durante el desarrollo.
+- [x] Diseña el diagrama de clases.
+- [x] Diseña una pagina web para el proyecto utilizando github-pages.
 
 ## Requisitos del sistema
 - Se debe de tener la base de datos de [Oracle XE](https://www.oracle.com/es/database/technologies/appdev/xe.html).

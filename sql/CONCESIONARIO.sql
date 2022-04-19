@@ -64,7 +64,7 @@ CREATE TABLE VENTAS(
 id_venta INTEGER,
 dni_empleado VARCHAR2(15),
 dni_cliente VARCHAR2(15),
-referencia VARCHAR2(30),
+referencia VARCHAR2(50),
 matricula VARCHAR2(10),
 color VARCHAR2(15),
 precioTotal INTEGER,
