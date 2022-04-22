@@ -1,3 +1,4 @@
+BEGIN
 --INSERTS USUARIOS
 INSERT INTO USUARIO (nombreUsuario, contraseña, nombre, apellido1, apellido2, telefono, email, rol) VALUES ('SrToska','1234','Antonio','de la Rosa','Santiago',600252478,'toska@email.com','ADMIN');
 INSERT INTO USUARIO (nombreUsuario, contraseña, nombre, apellido1, apellido2, telefono, email, rol) VALUES ('Emp1','1234','Ana Carmen','Vegano','Grapados',632589357,'anacarmen@email.com','EMPLOYEE');
@@ -9,7 +10,6 @@ INSERT INTO USUARIO (nombreUsuario, contraseña, nombre, apellido1, apellido2, te
 INSERT INTO USUARIO (nombreUsuario, contraseña, nombre, apellido1, apellido2, telefono, email, rol) VALUES ('User5','1234','Regulo','Miguel','Ribera',654782145,'regulo@email.com','USER');
 INSERT INTO USUARIO (nombreUsuario, contraseña, nombre, apellido1, apellido2, telefono, email, rol) VALUES ('User6','1234','Manolo','Figueras','Lopez',625874151,'manolo@email.com','USER');
 INSERT INTO USUARIO (nombreUsuario, contraseña, nombre, apellido1, apellido2, telefono, email, rol) VALUES ('User7','1234','Romualdo','Luza','Luza',625478551,'romualdo@email.com','REGISTER');
-
 
 --INSERTS CITAS
 INSERT INTO CITAS (id_usuario, fecha, seccion, comentarios) VALUES (4,'12/05/2022','INFORMACION','Me gustaria pedir informacion sobre la compra de x vehiculo');
@@ -65,8 +65,8 @@ INSERT INTO COMPLEMENTOS(id_extra,id_venta) VALUES (4,1);
 INSERT INTO COMPLEMENTOS(id_extra,id_venta) VALUES (4,2);
 INSERT INTO COMPLEMENTOS(id_extra,id_venta) VALUES (4,3);
 INSERT INTO COMPLEMENTOS(id_extra,id_venta) VALUES (4,4);
-
-
+COMMIT;
+END;
 
 
 
